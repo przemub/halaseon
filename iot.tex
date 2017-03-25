@@ -1,9 +1,10 @@
-\documentclass[12pt, a4paper, twoside]{article}
+\documentclass[12pt, a4paper]{article}
 
 \usepackage{polski}
 \usepackage[utf8]{inputenc}
 
 \usepackage[dvipsnames]{xcolor}
+\usepackage{hyperref}
 
 \title{Hałaseon}
 
@@ -19,7 +20,7 @@
 	\end{flushright}
 	\centering
 	\vspace{1.5 cm}
-	{\scshape Praca na konkurs Akademia Kodowania\par}
+	{\scshape Projekt na konkurs Akademia Kodowania\par}
 	\vspace{1.5 cm}
 	{\huge\bfseries Hałaseon\par}
 	\vspace{0.1cm}
@@ -32,13 +33,24 @@
 
 	\vfill
 
-% Bottom of the page
 	{\large \today\par}
 \end{titlepage}
 
 \tableofcontents
 
+\vfill \pagebreak
+
 \section{Wstęp}
+
+Hałas jest jednym z~cywilizacyjnych zagrożeń czyhających na nasze zdrowie. Tak jak fast foody powodują cukrzycę~i~otyłość, a~wielogodzinne przesiadywanie przed komputerem wady postawy, tak przebywanie w miejscach o~podwyższonym natężeniu hałasu powoduje, że słyszymy znacznie gorzej niż ludzie żyjący jeszcze kilkadziesiąt lat temu.
+
+Jakie są to miejsca? Nam w pierwszej kolejności przychodzi do głowy nasze liceum w trakcie przerwy. Setki uczniów upchanych na wąskim korytarzu i hip-hopowa muzyka z radiowęzła. Jeżeli ktoś nie lubi chodzić na koncerty muzyczne, to ciężko sobie wyobrazić, by miał gdzieś do czynienia z większym poziomem hałasu.
+
+W szkołach województwa śląskiego przeprowadzono pomiary, z których wynikło, że średni poziom hałasu to 85 decybeli\cite{dz}, podczas gdy poziom bezpieczny to 70 decybeli\cite{wikihalas}. Trzeba tu wspomnieć, że decybel jest jednostką logarytmiczną, więc dźwięk o natężeniu około 6 decybeli większym jest odbierany przez człowieka jako dwukrotnie głośniejszy.
+
+Nie potrzeba skomplikowanych badań, by poznać tego skutki. Wielu uczniów jak i nauczycieli skarży się na bóle głowy i uszu, migreny, nie jest w stanie się skupić i odczuwa zmęczenie przez codzienne przebywanie w tak głośnym środowisku. W dalszej części scenariusza zawarliśmy krótki przegląd wiedzy naukowej na ten temat.
+
+Celem naszego przedsięwzięcia jest zbudowanie urządzenia, dzięki któremu będzie można skutecznie mierzyć poziom hałasu w różnych miejscach budynku szkoły. Projekt takiej sondy jest przedstawiony w niniejszym dokumencie. Po jej zbudowaniu wypróbujemy je w naszej szkole i określimy skalę problemu dla niej. Zawarliśmy też tutaj rozmaite nasze propozycje, jak wykorzystać dane, które będą zbierane przez urządzenie i~w~efekcie pomóc w~redukcji hałasu w~środowisku szkolnym i nie tylko.
 
 \section{Szkodliwość hałasu w pigułce}
 
@@ -51,6 +63,13 @@
 \section{Podsumowanie}
 
 \begin{thebibliography}{9}
+
+\bibitem{dz}
+  Hałas w szkołach: Sprawdziliśmy. Jest głośniej niż fabryce, Dziennik Zachodni, 2012-10-04. Dostępny w internecie: \url{http://www.dziennikzachodni.pl/artykul/659865,halas-w-szkolach-sprawdzilismy-jest-glosniej-niz-fabryce-test-dz,id,t.html}
+
+\bibitem{wikihalas}
+  Hałas. Wikipedia: wolna encyklopedia, 2017-01-14 16:00. Dostępny w internecie: \url{https://pl.wikipedia.org/w/index.php?title=Ha%C5%82as&oldid=48179951}
+  
 \end{thebibliography}
 
 \end{document}
