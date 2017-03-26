@@ -4,3 +4,6 @@
 *.synctex.gz
 *.toc
 
+__pycache__
+*.pyc
+
