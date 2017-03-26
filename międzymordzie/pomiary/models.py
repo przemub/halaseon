@@ -23,6 +23,9 @@ class Pomiar(models.Model):
         return "{} dB".format(self.wynik)
     wynikf.short_description = 'Wynik pomiaru'
 
+    def __str__(self):
+        return "{} dB, {}".format(self.wynik, self.sonda.położenie)
+
     class Meta:
         verbose_name_plural = "Pomiary"
 
