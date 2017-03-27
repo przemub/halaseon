@@ -1,0 +1,84 @@
+<html lang="pl">
+    <head>
+        <title>NAMEHERE widok użytkownika</title>
+        <link rel="stylesheet" type="text/css" href="base.css">
+        <link rel="stylesheet" type="text/css" href="sec.css">
+        <meta charset="utf-8">
+    </head>
+    <script src="Chart.js"></script>
+    <script src="ajax.js"></script>
+    <body class="dashboard">
+        <div id="container">
+            <div id="header">
+                <div id="branding">
+                    <h1 id="site-name">Widok użytkownika</h1>
+                </div>
+                <div id="user-tools">
+                    Witaj. <a href="index.html">Zaloguj się</a>
+                </div>
+            </div>
+            <div id="sec_border">
+                <canvas id="myChart" width="300" height="100"></canvas>
+            </div>
+            <br /><br />
+            <div id="knowledge">
+                <h1>Czy wiesz że... ?</h1>
+                <p>Hałas jest jednym z cywilizacyjnych zagrożeń czyhających na nasze zdrowie. Tak jak fast foody powodują cukrzycę i otyłość, a wielo godzinne przesiadywanie przed komputerem wady postawy, tak przebywanie w miejscach o podwyższonym natężeniu hałasu powoduje, że słyszymy znacznie gorzej niż ludzie żyjący jeszcze kilkadziesiąt lat temu.</p>
+            </div>
+            <h1>Nota od autora</h1>
+            <p>Jest to bardzo wczesna wersja strony. Do poprawienia:<br />lepsze wyświetlanie podpisu osi<br />opisanie osi<br />i wiele więcej...</p>
+            <!--<footer>©Copyrights 2017 Armia Prezesa</footer>-->
+        </div>
+    </body>
+
+    <script>
+    var dane = [];
+    var opis = [];
+
+    for(var i = 0; i < 50; i++){
+        opis.push("10:" + i.toString());
+    }
+
+    setInterval(function() {
+        ajax( {
+            type: "POST",
+            url: "update.php",
+            onError: function(msg) {
+                console.warn(msg)
+            },
+            onSuccess: function(msg) {
+                dane.push(parseInt(msg));
+                myChart.update();
+            }
+        });
+    }, 2000);
+
+
+    var ctx = document.getElementById("myChart").getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: opis,
+            datasets: [{
+                label: 'Aktualna przerwa',
+                data: dane,
+                backgroundColor: "rgba(255, 140, 10, 0.4)"
+            }, {
+                label: 'Poprzednia przerwa',
+                data: [90, 61, 50, 60, 70, 80, 90, 61, 50, 60, 70, 80],
+                backgroundColor: "rgba(255, 99, 132, 0.4)"
+            }]
+        },
+        options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+    });
+    </script>
+</html>
+
