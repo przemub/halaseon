@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load l10n %}
 
 <html lang="pl">
     <head>
@@ -34,42 +35,25 @@
     </body>
 
     <script>
-    var dane = [];
-    var opis = [];
-
-    for(var i = 0; i < 50; i++){
-        opis.push("10:" + i.toString());
-    }
-
-    setInterval(function() {
-        ajax( {
-            type: "POST",
-            url: "{% static "pomiary/update.php" %}",
-            onError: function(msg) {
-                console.warn(msg)
-            },
-            onSuccess: function(msg) {
-                dane.push(parseInt(msg));
-                myChart.update();
-            }
-        });
-    }, 2000);
-
-
     var ctx = document.getElementById("myChart").getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: opis,
-            datasets: [{
-                label: 'Aktualna przerwa',
-                data: dane,
-                backgroundColor: "rgba(255, 140, 10, 0.4)"
-            }, {
-                label: 'Poprzednia przerwa',
-                data: [90, 61, 50, 60, 70, 80, 90, 61, 50, 60, 70, 80],
-                backgroundColor: "rgba(255, 99, 132, 0.4)"
-            }]
+            datasets: [
+                {% for sonda in sondy %}
+                {
+                    label: "{{ sonda }}",
+                    data: [
+                        {% for pomiar in sonda.pomiar_set.all %}
+                            {
+                                x: {{ pomiar.godzina }},
+                                y: {{ pomiar.wynik|unlocalize }}
+                            },
+                        {% endfor %}
+                    ]
+                },
+                {% endfor %}
+            ]
         },
         options: {
         scales: {
@@ -77,6 +61,10 @@
                 ticks: {
                     beginAtZero:true
                 }
+            }],
+            xAxes: [{
+                type: 'linear',
+                position: 'bottom'
             }]
         }
     }
