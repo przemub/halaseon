@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+
 
 def index(request):
-    return HttpResponse("Tu będą prezentowane wyniki pomiarów. Zapraszamy wkrótce.")
+    context = {}
+    return render(request, 'pomiary/index.html', context)
 

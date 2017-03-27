@@ -1,12 +1,14 @@
+{% load staticfiles %}
+
 <html lang="pl">
     <head>
         <title>NAMEHERE widok użytkownika</title>
-        <link rel="stylesheet" type="text/css" href="base.css">
-        <link rel="stylesheet" type="text/css" href="sec.css">
+        <link rel="stylesheet" type="text/css" href={% static "admin/css/base.css" %}>
+        <link rel="stylesheet" type="text/css" href={% static "pomiary/sec.css" %}>
         <meta charset="utf-8">
     </head>
-    <script src="Chart.js"></script>
-    <script src="ajax.js"></script>
+    <script src={% static "pomiary/Chart.js" %}></script>
+    <script src={% static "pomiary/ajax.js" %}></script>
     <body class="dashboard">
         <div id="container">
             <div id="header">
@@ -42,7 +44,7 @@
     setInterval(function() {
         ajax( {
             type: "POST",
-            url: "update.php",
+            url: "{% static "pomiary/update.php" %}",
             onError: function(msg) {
                 console.warn(msg)
             },
