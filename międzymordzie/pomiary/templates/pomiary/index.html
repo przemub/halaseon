@@ -44,7 +44,7 @@
                 {
                     label: "{{ sonda }}",
                     data: [
-                        {% for pomiar in sonda.pomiar_set.all %}
+                        {% for pomiar in sonda.pomiary %}
                             {
                                 x: {{ pomiar.godzina }},
                                 y: {{ pomiar.wynik|unlocalize }}

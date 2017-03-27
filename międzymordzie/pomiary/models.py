@@ -12,6 +12,9 @@ class Sonda(models.Model):
     def __str__(self):
         return self.położenie
 
+    def pomiary(self):
+        return sorted(self.pomiar_set.all(), key=lambda x: x.godzina())
+
     class Meta:
         verbose_name_plural = "Sondy"
 
