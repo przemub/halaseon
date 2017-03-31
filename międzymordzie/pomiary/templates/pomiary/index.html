@@ -208,7 +208,6 @@
 	</body>
 
 	<script src="{% static "pomiary/Chart.js" %}"></script>
-	<script src="{% static "pomiary/ajax.js" %}"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
 	<script>
@@ -279,7 +278,18 @@
 			},
 			dataType: 'json',
 			success: function (data) {
-				console.log(data);
+				var j = 0;
+				jQuery.each(data, function(i, val) {
+					var alarm = true;
+					for(var l = 0; l < data_now.datasets[j].data.length; l++)
+						if (data_now.datasets[j].data[l].x == val.time.godzina)
+							alarm = false;
+					if(alarm)
+						data_now.datasets[j].data.push({x: val.time.godzina, y: val.value});
+					j++;
+				})
+				myChart.update();
+				Refresh();
 			},
 			error: function (data) {
 				console.warn(data);
