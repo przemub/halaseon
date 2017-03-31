@@ -47,7 +47,8 @@ class Pomiar(models.Model):
 
     def godzina(self):
         # Nie bijcie
-        return self.data.hour * 100 + self.data.minute
+        data = timezone.localtime(self.data)
+        return data.hour * 100 + data.minute
 
     class Meta:
         verbose_name_plural = "Pomiary"
