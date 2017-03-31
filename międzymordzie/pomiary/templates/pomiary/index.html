@@ -184,7 +184,7 @@
                             <div class="panel info-box panel-white">
                                 <div class="panel-body">
                                     <div class="info-box-stats">
-                                        <p class="counter">V0.2a</p>
+                                        <p class="counter">V0.2b</p>
                                         <span class="info-box-title">Wersja oprogramowania</span>
                                     </div>
                                     <div class="info-box-progress">
@@ -278,15 +278,17 @@
 			},
 			dataType: 'json',
 			success: function (data) {
-				var j = 0;
 				jQuery.each(data, function(i, val) {
-					var alarm = true;
-					for(var l = 0; l < data_now.datasets[j].data.length; l++)
-						if (data_now.datasets[j].data[l].x == val.time.godzina)
-							alarm = false;
-					if(alarm)
-						data_now.datasets[j].data.push({x: val.time.godzina, y: val.value});
-					j++;
+					for(var j = 0; j < data_now.datasets.length; j++)
+						if(i == data_now.datasets[j].label){
+							var alarm = true;
+							for(var l = 0; l < data_now.datasets[j].data.length; l++)
+								if (data_now.datasets[j].data[l].x == val.time.godzina)
+									alarm = false;
+							if(alarm)
+								data_now.datasets[j].data.push({x: val.time.godzina, y: val.value});
+							break;
+						}
 				})
 				myChart.update();
 				Refresh();
