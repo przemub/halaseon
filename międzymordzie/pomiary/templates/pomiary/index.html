@@ -1,74 +1,322 @@
 {% load staticfiles %}
 {% load l10n %}
 
-<html lang="pl">
-    <head>
-        <title>NAMEHERE widok użytkownika</title>
-        <link rel="stylesheet" type="text/css" href={% static "admin/css/base.css" %}>
-        <link rel="stylesheet" type="text/css" href={% static "pomiary/sec.css" %}>
-        <meta charset="utf-8">
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <title>Widok użytkownika</title>
+        <meta content="width=device-width, initial-scale=1" name="viewport">
+        <meta charset="UTF-8">
+        <meta name="description" content="Widok użytkownika">
+        <meta name="keywords" content="halaseon">
+
+        <link href="{% static "pomiary/bootstrap.css" %}" rel="stylesheet" type="text/css">
+        <link href="{% static "pomiary/modern.css" %}" rel="stylesheet" type="text/css">
     </head>
-    <script src={% static "pomiary/Chart.js" %}></script>
-    <script src={% static "pomiary/ajax.js" %}></script>
-    <body class="dashboard">
-        <div id="container">
-            <div id="header">
-                <div id="branding">
-                    <h1 id="site-name">Widok użytkownika</h1>
-                </div>
-                <div id="user-tools">
-                    Witaj. <a href="index.html">Zaloguj się</a>
-                </div>
-            </div>
-            <div id="sec_border">
-                <canvas id="myChart" width="300" height="100"></canvas>
-            </div>
-            <br /><br />
-            <div id="knowledge">
-                <h1>Czy wiesz że... ?</h1>
-                <p>Hałas jest jednym z cywilizacyjnych zagrożeń czyhających na nasze zdrowie. Tak jak fast foody powodują cukrzycę i otyłość, a wielo godzinne przesiadywanie przed komputerem wady postawy, tak przebywanie w miejscach o podwyższonym natężeniu hałasu powoduje, że słyszymy znacznie gorzej niż ludzie żyjący jeszcze kilkadziesiąt lat temu.</p>
-            </div>
-            <h1>Nota od autora</h1>
-            <p>Jest to bardzo wczesna wersja strony. Do poprawienia:<br />lepsze wyświetlanie podpisu osi<br />opisanie osi<br />i wiele więcej...</p>
-            <!--<footer>©Copyrights 2017 Armia Prezesa</footer>-->
-        </div>
-    </body>
 
-    <script>
-    var ctx = document.getElementById("myChart").getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            datasets: [
-                {% for sonda in sondy %}
-                {
-                    label: "{{ sonda }}",
-                    data: [
-                        {% for pomiar in sonda.pomiary %}
-                            {
-                                x: {{ pomiar.godzina }},
-                                y: {{ pomiar.wynik|unlocalize }}
-                            },
-                        {% endfor %}
-                    ]
-                },
-                {% endfor %}
-            ]
-        },
-        options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                }
-            }],
-            xAxes: [{
-                type: 'linear',
-                position: 'bottom'
-            }]
-        }
-    }
-    });
-    </script>
+    <body class="page-header-fixed compact-menu page-horizontal-bar  pace-done">
+        <main class="page-content content-wrap">
+            <div class="page-inner" style="min-height:973px !important">
+                <div class="page-title">
+                    <div class="container">
+                        <h3 style="display: inline">Strona użytkownika</h3><div class="pull-right">Witaj, <a href="/admin/">Zaloguj się</a></div>
+                    </div>
+                </div>
+                <div id="main-wrapper" class="container">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6">
+                            <div id="panel1" class="panel info-box panel-white" style="display: none">
+                                <div class="panel-body">
+                                    <div class="info-box-stats">
+                                        <p id="prog_value_1" class="counter">76dB</p>
+                                        <span id="prog_text_1" class="info-box-title">Przed czytelnią</span>
+                                    </div>
+                                    <div class="info-box-progress">
+                                        <div class="progress progress-xs progress-squared bs-n">
+                                            <div id="prog_proc_1" class="progress-bar progress-bar-success"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div id="panel2" class="panel info-box panel-white" style="display: none">
+                                <div class="panel-body">
+                                    <div class="info-box-stats">
+                                        <p id="prog_value_2" class="counter">60dB</p>
+                                        <span id="prog_text_2" class="info-box-title">W szafce</span>
+                                    </div>
+
+                                    <div class="info-box-progress">
+                                        <div class="progress progress-xs progress-squared bs-n">
+                                            <div id="prog_proc_2" class="progress-bar progress-bar-success">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div id="panel3" class="panel info-box panel-white" style="display: none">
+                                <div class="panel-body">
+                                    <div class="info-box-stats">
+                                        <p id="prog_value_3" class="counter">70dB</p>
+                                        <span id="prog_text_3" class="info-box-title">Sala gimnastyczna</span>
+                                    </div>
+
+                                    <div class="info-box-progress">
+                                        <div class="progress progress-xs progress-squared bs-n">
+                                            <div id="prog_proc_3" class="progress-bar progress-bar-warning">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div id="panel4" class="panel info-box panel-white" style="display: none">
+                                <div class="panel-body">
+                                    <div class="info-box-stats">
+                                        <p id="prog_value_4" class="counter">45dB</p>
+                                        <span id="prog_text_4" class="info-box-title">Pokój nauczycielski</span>
+                                    </div>
+
+                                    <div class="info-box-progress">
+                                        <div class="progress progress-xs progress-squared bs-n">
+                                            <div id="prog_proc_4" class="progress-bar progress-bar-danger">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-9 col-md-12">
+                            <div class="panel panel-white">
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                        <div class="visitors-chart">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">Głośność</h4>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div id="flotchart1" style="padding: 0px; position: relative;">
+													<canvas id="chart" class="flot-base" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 528px; height: 340px;" width="528" height="340"></canvas>
+												</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="stats-info">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">Czujniki</h4>
+                                            </div>
+                                            <div class="panel-body">
+                                                <ul class="list-unstyled">
+                                                    <li id="db_form_1" style="display: none"> <span id="db_text_1">Czytelnia</span>			<div id="db_value_1" class="text-success pull-right">55dB</div></li>
+                                                    <li id="db_form_2" style="display: none"> <span id="db_text_2">Pokój nauczycielski</span><div id="db_value_2" class="text-success pull-right">60dB</div></li>
+                                                    <li id="db_form_3" style="display: none"> <span id="db_text_3">Sala gimnastyczna</span>	<div id="db_value_3" class="text-success pull-right">70dB</div></li>
+                                                    <li id="db_form_4" style="display: none"> <span id="db_text_4">Pokój nauczycielski</span><div id="db_value_4" class="text-success pull-right">45dB</div></li>
+													<li id="db_form_5" style="display: none"> <span id="db_text_5">Pokój nauczycielski</span><div id="db_value_5" class="text-success pull-right">45dB</div></li>
+													<li id="db_form_6" style="display: none"> <span id="db_text_6">Pokój nauczycielski</span><div id="db_value_6" class="text-success pull-right">45dB</div></li>
+													<li id="db_form_7" style="display: none"> <span id="db_text_7">Pokój nauczycielski</span><div id="db_value_7" class="text-success pull-right">45dB</div></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="panel panel-white" style="height: 100%;">
+                                <div class="panel-heading"><h4 class="panel-title">Ustawienia wykresu</h4></div>
+                                <div class="panel-body form-group">
+									<label class="control-label">Zakres</label><br />
+									<div class="col-sm-10">
+	                                    <select class="form-control">
+											<option value="0" selected="selected">Przerwa</option>
+											<option value="1">Dzień</option>
+											<option value="2">Miesiąc</option>
+											<option value="3">Rok</option>
+										</select>
+									</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+					<div class="row">
+						<div class="col-lg-3 col-md-6">
+                            <div class="panel info-box panel-white">
+                                <div class="panel-body">
+                                    <div class="info-box-stats">
+                                        <p class="counter">19485</p>
+                                        <span class="info-box-title">Liczba odwiedzin</span>
+                                    </div>
+                                    <div class="info-box-progress">
+                                        <div class="progress progress-xs progress-squared bs-n">
+                                            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="95" style="width: 100%">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+						<div class="col-lg-3 col-md-6">
+							<div class="panel info-box panel-white">
+								<div class="panel-body">
+									<div class="info-box-stats">
+										<p class="counter">36%</p>
+										<span class="info-box-title">Stan baterii</span>
+									</div>
+									<div class="info-box-progress">
+										<div class="progress progress-xs progress-squared bs-n">
+											<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="95" style="width: 36%">
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-3 col-md-6">
+                            <div class="panel info-box panel-white">
+                                <div class="panel-body">
+                                    <div class="info-box-stats">
+                                        <p class="counter">V0.2a</p>
+                                        <span class="info-box-title">Wersja oprogramowania</span>
+                                    </div>
+                                    <div class="info-box-progress">
+                                        <div class="progress progress-xs progress-squared bs-n">
+                                            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="95" style="width: 100%">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+					</div>
+                </div>
+                <div class="page-footer">
+                    <div class="container">
+                        <p class="no-s">2017 ©Armia Prezesa - Projekt "Internetowy panel systemu Halaseon" stworzony na potrzeby konkursu "Akademia Programowania"</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+	</body>
+
+	<script src="{% static "pomiary/Chart.js" %}"></script>
+	<script src="{% static "pomiary/ajax.js" %}"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+	<script>
+	var safe_sound = 75;
+	var safe_sound_2 = 30;
+
+	var data_now = {
+		datasets: [
+			{% for sonda in sondy %}
+			{{ sonda|cut:" " |cut:"ą" |cut:"ś" |cut:"ć" |cut:"ę" |cut:"ż" |cut:"ń"}} = {
+				label: "{{ sonda }}",
+				data: [
+					{% for pomiar in sonda.pomiary %}
+						{
+							x: {{ pomiar.godzina }},
+							y: {{ pomiar.wynik|unlocalize }}
+						},
+					{% endfor %}
+				]
+			},
+			{% endfor %}
+		]
+	};
+
+	function Remove(el, old, neu) {
+		document.getElementById(el).classList.remove(neu);
+		document.getElementById(el).classList.remove(old);
+		document.getElementById(el).classList.add(neu);
+	}
+
+	function Refresh() {
+		for(var i = 0; (i < 4)&&(i < data_now.datasets.length); i++){
+			document.getElementById("panel" + (i+1).toString()).style = "";
+			document.getElementById("prog_value_" + (i+1).toString()).innerHTML = data_now.datasets[i].data[data_now.datasets[i].data.length - 1].y.toString() + "dB";
+			document.getElementById("prog_proc_" + (i+1).toString()).style = "width: " + data_now.datasets[i].data[data_now.datasets[i].data.length - 1].y.toString() + "%";
+			if(data_now.datasets[i].data[data_now.datasets[i].data.length - 1].y <= safe_sound_2){
+				document.getElementById("prog_proc_" + (i+1).toString()).classList.remove("progress-bar-warning");
+				Remove("prog_proc_" + (i+1).toString(), "progress-bar-danger", "progress-bar-success");
+			}else if(data_now.datasets[i].data[data_now.datasets[i].data.length - 1].y > safe_sound){
+				document.getElementById("prog_proc_" + (i+1).toString()).classList.remove("progress-bar-warning");
+				Remove("prog_proc_" + (i+1).toString(), "progress-bar-success", "progress-bar-danger");
+			}else {
+				document.getElementById("prog_proc_" + (i+1).toString()).classList.remove("progress-bar-success");
+				Remove("prog_proc_" + (i+1).toString(), "progress-bar-danger", "progress-bar-warning");
+			}
+			document.getElementById("prog_text_" + (i+1).toString()).innerHTML = data_now.datasets[i].label;
+		}
+
+		for(var i = 0; (i < 7)&&(i < data_now.datasets.length); i++){
+			document.getElementById("db_form_" + (i+1).toString()).style = "";
+			document.getElementById("db_text_" + (i+1).toString()).innerHTML = data_now.datasets[i].label;
+			document.getElementById("db_value_" + (i+1).toString()).innerHTML = data_now.datasets[i].data[data_now.datasets[i].data.length - 1].y.toString() + "dB";
+			if(data_now.datasets[i].data[data_now.datasets[i].data.length - 1].y > safe_sound){
+				Remove("db_value_" + (i+1).toString(), "text-success", "text-danger");
+			}else{
+				Remove("db_value_" + (i+1).toString(), "text-danger", "text-success");
+			}
+		}
+	}
+
+	Refresh();
+
+	setInterval(function() {
+		$.ajax({
+			url: '/ajax/live_update/',
+			data: {
+				'cos': 'cos'
+			},
+			dataType: 'json',
+			success: function (data) {
+				console.log(data);
+			},
+			error: function (data) {
+				console.warn(data);
+			}
+		})
+	}, 5000);
+
+	var ctx = document.getElementById("chart").getContext('2d');
+	var myChart = new Chart(ctx, {
+		type: 'line',
+		data: data_now,
+		options: {
+				scales: {
+					xAxes: [{
+						type: "linear",
+						position: "bottom",
+						ticks: {
+							autoSkip: true,
+							maxRotation: 0
+						},
+						scaleLabel: {
+							display: true,
+							labelString: 'Godzina',
+						}}],
+					yAxes: [{
+						ticks: {
+							beginAtZero:true
+						},
+						scaleLabel: {
+							display: true,
+							labelString: 'Głośność [dB]'
+						}}]},
+				tooltips: {
+					callbacks: {
+						label: function(tooltipItems, data) {
+							return data.datasets[tooltipItems.datasetIndex].label +': ' + tooltipItems.yLabel + ' dB';
+						}}}}});
+
+	</script>
 </html>
-

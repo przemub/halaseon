@@ -18,5 +18,6 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^$', include('pomiary.urls')),
+    url(r'^ajax/', include('pomiary.urls')),
     url(r'^admin/', admin.site.urls),
 ]
