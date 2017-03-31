@@ -219,6 +219,8 @@
 			{% for sonda in sondy %}
 			{{ sonda|cut:" " |cut:"ą" |cut:"ś" |cut:"ć" |cut:"ę" |cut:"ż" |cut:"ń"}} = {
 				label: "{{ sonda }}",
+				borderColor: "{{ sonda.kolor }}",
+				backgroundColor: " {{ sonda.kolor_alpha }}",
 				data: [
 					{% for pomiar in sonda.pomiary %}
 						{
