@@ -1,0 +1,112 @@
+{% load staticfiles %}
+{% load l10n %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <title>Inicjalizacja urządzenia</title>
+        <meta content="width=device-width, initial-scale=1" name="viewport">
+        <meta charset="UTF-8">
+        <meta name="description" content="Inicjalizacja urządzenia">
+        <meta name="keywords" content="halaseon">
+
+		<link href="{% static "pomiary/bootstrap.css" %}" rel="stylesheet" type="text/css">
+		<link href="{% static "pomiary/modern.css" %}" rel="stylesheet" type="text/css">
+    </head>
+
+    <body class="page-header-fixed compact-menu page-horizontal-bar  pace-done">
+        <main class="page-content content-wrap">
+            <div class="page-inner" style="min-height:973px !important">
+                <div class="page-title">
+                    <div class="container">
+                        <h3 style="display: inline">Inicjalizacja urządzenia</h3>
+                    </div>
+                </div>
+                <div id="main-wrapper" class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+							<div class="panel panel-white">
+								<div class="panel-body">
+									<span>Już prawie gotowe!<br/>Wypełnij tylko podstawowe informacje poniżej i ciesz się niezawodnym systemem Halaseon.</span>
+								</div>
+							</div>
+						</div>
+                    </div>
+                    <div class="row">
+						<div class="col-md-12">
+							<div class="panel panel-white">
+								<div class="panel-heading clearfix">
+									<h4 class="panel-title">Dane logowania do systemu</h4>
+								</div>
+								<div class="panel-body">
+									<div class="form-horizontal">
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="in-login">Login</label>
+											<div class="col-sm-10">
+												<input id="in-login" class="form-control" placeholder="Login">
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="in-login">Hasło</label>
+											<div class="col-sm-10">
+												<input id="in-login" type="password" class="form-control" placeholder="Hasło">
+												<p class="help-block">Hasło powinno mieć od 6 do 15 znaków.</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="panel panel-white">
+								<div class="panel-heading clearfix">
+									<h4 class="panel-title">Tryb działania urządzenia</h4>
+								</div>
+								<div class="panel-body">
+									<div class="form-horizontal">
+										<div class="form-group">
+											<label class="col-sm-2 control-label">Checkboxes</label>
+											<div class="col-sm-10">
+												<select class="form-control m-b-sm">
+													<option>Slave</option>
+													<option>Master</option>
+												</select>
+												<p class="help-block">Urządzenie przesyła dane do master'a</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="panel panel-white">
+								<div class="panel-heading clearfix">
+									<h4 class="panel-title">Ustawienia czasu</h4>
+								</div>
+								<div class="panel-body">
+									<div class="form-horizontal">
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="in-login">Login</label>
+											<div class="col-sm-10">
+												<input id="in-login" class="form-control" placeholder="Login">
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+                </div>
+                <div class="page-footer">
+                    <div class="container">
+                        <p class="no-s">2017 ©Armia Prezesa - Projekt "Internetowy panel systemu Halaseon" stworzony na potrzeby konkursu "Akademia Programowania"</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+	</body>
+</html>

@@ -19,5 +19,11 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^$', include('pomiary.urls')),
     url(r'^ajax/', include('pomiary.urls')),
+    url(r'^pomiary/', include('pomiary.urls')),
     url(r'^admin/', admin.site.urls),
 ]
+
+handler400 = 'pomiary.views.handler400'
+handler403 = 'pomiary.views.handler403'
+handler404 = 'pomiary.views.handler404'
+handler500 = 'pomiary.views.handler500'
