@@ -16,7 +16,7 @@ def initial(request):
 def live_update(request):
     dict = {}
     for sonda in context['sondy']:
-        dict[sonda.__str__()] = {'value': sonda.pomiary()[-1].wynik, 'time':{'godzina': sonda.pomiary()[-1].godzina(), 'hour': sonda.pomiary()[-1].data.hour(), 'minute': sonda.pomiary()[-1].data.minute(), 'data': sonda.pomiary()[-1].data.day}}
+        dict[sonda.__str__()] = {'value': sonda.pomiary()[-1].wynik, 'time':{'godzina': sonda.pomiary()[-1].godzina(), 'hour': sonda.pomiary()[-1].data.hour, 'minute': sonda.pomiary()[-1].data.minute, 'data': sonda.pomiary()[-1].data.day}}
 
     return JsonResponse(dict)
 
