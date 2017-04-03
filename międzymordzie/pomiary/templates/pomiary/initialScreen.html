@@ -14,7 +14,7 @@
 		<link href="{% static "pomiary/modern.css" %}" rel="stylesheet" type="text/css">
     </head>
 
-    <body class="page-header-fixed compact-menu page-horizontal-bar  pace-done">
+    <body class="page-header-fixed compact-menu page-horizontal-bar pace-done" onload="init()">
         <main class="page-content content-wrap">
             <div class="page-inner" style="min-height:973px !important">
                 <div class="page-title">
@@ -26,8 +26,11 @@
                     <div class="row">
                         <div class="col-md-12">
 							<div class="panel panel-white">
+								<div class="panel-heading clearfix">
+									<h4 class="panel-title">Już prawie gotowe!</h4>
+								</div>
 								<div class="panel-body">
-									<span>Już prawie gotowe!<br/>Wypełnij tylko podstawowe informacje poniżej i ciesz się niezawodnym systemem Halaseon.</span>
+									<span>Wypełnij tylko podstawowe informacje poniżej i ciesz się niezawodnym systemem Halaseon.</span>
 								</div>
 							</div>
 						</div>
@@ -67,13 +70,13 @@
 								<div class="panel-body">
 									<div class="form-horizontal">
 										<div class="form-group">
-											<label class="col-sm-2 control-label">Checkboxes</label>
+											<label class="col-sm-2 control-label">Tryb</label>
 											<div class="col-sm-10">
-												<select class="form-control m-b-sm">
-													<option>Slave</option>
-													<option>Master</option>
+												<select class="form-control m-b-sm" id="in-mode" onclick="modeChange()">
+													<option id="in-mode-slave">Slave</option>
+													<option id="in-mode-master">Master</option>
 												</select>
-												<p class="help-block">Urządzenie przesyła dane do master'a</p>
+												<p class="help-block" id="mode-info">Urządzenie przesyła dane do master'a</p>
 											</div>
 										</div>
 									</div>
@@ -85,14 +88,41 @@
 						<div class="col-md-12">
 							<div class="panel panel-white">
 								<div class="panel-heading clearfix">
-									<h4 class="panel-title">Ustawienia czasu</h4>
+									<h4 class="panel-title">Konfiguracja urządzenia</h4>
 								</div>
 								<div class="panel-body">
 									<div class="form-horizontal">
 										<div class="form-group">
-											<label class="col-sm-2 control-label" for="in-login">Login</label>
+											<label class="col-sm-2 control-label" for="in-ntp">Data i czas</label>
 											<div class="col-sm-10">
-												<input id="in-login" class="form-control" placeholder="Login">
+												<div class="radio">
+													<label><input type="radio" id="in-ntp-aut" name="id-ntp" checked="checked" onclick="ntpChange()">Automatyczna</label>
+												</div>
+												<div class="radio">
+													<label><input type="radio" id="in-ntp-man" name="id-ntp" onclick="ntpChange()">Ręczna</label>
+												</div>
+												<p class="help-block" id="ntp-info">Synchronizuje czas z wykorzystaniem serwera NTP</p>
+											</div>
+										</div>
+									</div>
+									<div class="form-horizontal">
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="in-ip">Sieć</label>
+											<div class="col-sm-10">
+												<div class="radio">
+													<label><input type="radio" id="in-ip-aut" name="id-ip" checked="checked" onclick="ipChange()">Automatyczna</label>
+												</div>
+												<div class="radio">
+													<label><input type="radio" id="in-ip-man" name="id-ip" onclick="ipChange()">Ręczna</label>
+												</div>
+												<br />
+												<div class="col-sm-5">
+													<input class="form-control" id="in-ip" placeholder="Adres IP" disabled="disabled">
+												</div>
+												<div class="col-sm-5">
+													<input class="form-control" id="in-dg" placeholder="Brama domyślna" disabled="disabled">
+												</div><br /><br />
+												<p class="help-block" id="ip-error" style="color: red;"></p>
 											</div>
 										</div>
 									</div>
@@ -100,6 +130,23 @@
 							</div>
 						</div>
 					</div>
+					<div class="row">
+                        <div class="col-md-12">
+							<div class="panel panel-white">
+								<div class="panel-heading clearfix">
+									<h4 class="panel-title">Zapisywanie danych</h4>
+								</div>
+								<div class="panel-body">
+									<div class="col-sm-10">
+										<span>Jeśli wprowadziłeś już wszystkie dane wciśnij przycisk Zapisz, żeby kontynuować.</span>
+									</div>
+									<div class="col-sm-2">
+										<button type="submit" class="btn btn-success pull-right" onclick="check()">Zapisz</button>
+									</div>
+								</div>
+							</div>
+						</div>
+                    </div>
                 </div>
                 <div class="page-footer">
                     <div class="container">
@@ -109,4 +156,86 @@
             </div>
         </main>
 	</body>
+
+	<script>
+		var mode_info = document.getElementById('mode-info');
+		var ntp_info = document.getElementById('ntp-info');
+		var ip_error = document.getElementById('ip-error');
+
+		var in_ntp_aut = document.getElementById('in-ntp-aut');
+		var in_ntp_man = document.getElementById('in-ntp-man');
+
+		var in_mode_slave = document.getElementById('in-mode-slave');
+		var in_mode_master = document.getElementById('in-mode-master');
+
+		var in_ip_aut = document.getElementById('in-ip-aut');
+		var in_ip_man = document.getElementById('in-ip-man');
+		var in_ip = document.getElementById('in-ip');
+		var in_dg = document.getElementById('in-dg');
+
+		var correct = true;
+
+
+		function init() {
+			mode_info.innerHTML = "Urządzenie przesyła dane do master\'a";
+			ntp_info.innerHTML = "Synchronizuje czas z wykorzystaniem serwera NTP";
+			ip_error.innerHTML = "";
+			in_ntp_aut.checked = true;
+			in_mode_slave.selected = true;
+			in_ip_aut.checked = true;
+			in_ip.disabled = in_dg.disabled = true;
+			in_ip.value = in_dg.value = "";
+		}
+
+		function ntpChange() {
+			if(in_ntp_aut.checked)
+				ntp_info.innerHTML = "Synchronizuje czas z wykorzystaniem serwera NTP";
+				else
+					ntp_info.innerHTML = "Pobiera aktualną godzinę z przeglądarki i zapisuje ją na stałe w urządzeniu"
+		}
+
+		function modeChange() {
+			if(in_mode_slave.selected)
+				mode_info.innerHTML = "Urządzenie przesyła dane do master\'a";
+				else
+					mode_info.innerHTML = "Urządzenie pełni rolę master\'a. W sieci wymagany jest dokładnie jeden master"
+		}
+
+		function ipChange() {
+			if(in_ip_aut.checked){
+				in_ip_aut.checked = true;
+				in_ip.disabled = in_dg.disabled = true;
+				in_ip.value = in_dg.value = "";
+			}else{
+				in_ip_aut.checked = false;
+				in_ip.disabled = in_dg.disabled = false;
+			}
+		}
+
+		function check() {
+			correct = true;
+			if(in_ip_man.checked) {
+				if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(in_ip.value))
+				 	in_ip.classList.remove("has-error");
+				else{
+					in_ip.classList.add("has-error");
+					correct = false;
+				}
+				if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(in_dg.value))
+				 	in_dg.classList.remove("has-error");
+				else{
+					in_dg.classList.add("has-error");
+					correct = false;
+				}
+			}
+			if(correct)
+				send();
+				else
+					ip_error.innerHTML = "Wprowadź poprawny adres IP i adres bramy domyślnej";
+		}
+
+		function send() {
+			alert("wyslano");
+		}
+	</script>
 </html>
