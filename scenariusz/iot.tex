@@ -4,7 +4,7 @@
 \usepackage[utf8]{inputenc}
 
 \usepackage[dvipsnames]{xcolor}
-\usepackage{hyperref}
+\usepackage[hyphens]{url}
 
 \title{Hałaseon}
 
@@ -48,17 +48,58 @@ Jakie są to miejsca? Nam w pierwszej kolejności przychodzi do głowy nasze lic
 
 W szkołach województwa śląskiego przeprowadzono pomiary, z których wynikło, że średni poziom hałasu to 85 decybeli\cite{dz}, podczas gdy poziom bezpieczny to 70 decybeli\cite{wikihalas}. Trzeba tu wspomnieć, że decybel jest jednostką logarytmiczną, więc dźwięk o natężeniu około 6 decybeli większym jest odbierany przez człowieka jako dwukrotnie głośniejszy.
 
-Nie potrzeba skomplikowanych badań, by poznać tego skutki. Wielu uczniów jak i nauczycieli skarży się na bóle głowy i uszu, migreny, nie jest w stanie się skupić i odczuwa zmęczenie przez codzienne przebywanie w tak głośnym środowisku. W dalszej części scenariusza zawarliśmy krótki przegląd wiedzy naukowej na ten temat.
+Nie potrzeba skomplikowanych badań, żeby poznać tego skutki. Wielu uczniów jak i nauczycieli skarży się na bóle głowy i uszu, migreny, nie jest w stanie się skupić i odczuwa zmęczenie przez codzienne przebywanie w tak głośnym środowisku. W dalszej części scenariusza zawarliśmy krótki przegląd wiedzy naukowej na ten temat.
 
 Celem naszego przedsięwzięcia jest zbudowanie urządzenia, dzięki któremu będzie można skutecznie mierzyć poziom hałasu w różnych miejscach budynku szkoły. Projekt takiej sondy jest przedstawiony w niniejszym dokumencie. Po jej zbudowaniu wypróbujemy je w naszej szkole i określimy skalę problemu dla niej. Zawarliśmy też tutaj rozmaite nasze propozycje, jak wykorzystać dane, które będą zbierane przez urządzenie i~w~efekcie pomóc w~redukcji hałasu w~środowisku szkolnym i nie tylko.
 
 \section{Szkodliwość hałasu w pigułce}
+Z hałasem spotykamy się na co dzień -- w pracy, na ulicy, czasem w domu. Jednak rzadko zdajemy sobie sprawę, jak niekorzystnie wpływa on na nasze zdrowie i że lekceważymy jego skutki. Od zaledwie 70 dB pojawiają się niekorzystne zmiany w organizmie -- nadciśnienie, zaburzenie pracy żołądka czy problemy psychiczne. W badaniach przeprowadzonych w ciągu kilku ostatnich lat stwierdzono, że hałas ma zły wpływ na ciążę i prowadzi do zaburzeń w rozwoju kości noworodka (głównie zębów). Ponadto skutkuje występowaniem wrzodów żołądka oraz przyspiesza proces starzenia się.
+
+Powyżej 90 dB dochodzi do ubytków słuchu. Są to zmiany nieodwracalne, których skutki łagodzi się poprzez stosowanie aparatów słuchowych. Po przekroczeniu 120 dB istnieje niebezpieczeństwo mechanicznego uszkodzenia słuchu, które prowadzi do trwałej głuchoty.
+
+Obecnie problem hałasu przestał być lekceważony, czego dowodem są działania podjęte przez instytucje ustawodawcze państw, które to wprowadziły jasno określone granice po przekroczeniu których uznaje się dane zajęcie za głośne i nakłada się obowiązek noszenia elementów chroniących słuch. Poza tym w niektórych szkołach zastąpiono głośne dzwonki lekcyjne komunikatami z głośników oraz zaczęto edukować uczniów w zakresie spokojniejszego spędzania przerw.
 
 \section{Zbierane dane i ich zastosowania}
+
+Głównym zadaniem urządzenia jest zbieranie oraz prezentowanie w przyjemnej formie wizualnej danych określających poziom hałasu w różnych miejscach szkoły. Zastosowanie więcej niż jednej sondy pozwala na łatwe objęcie pomiarem całego terenu placówki edukacyjnej jak i umożliwia uzyskanie bardziej wiarygodnych danych. Dzięki umieszczeniu precyzyjnego (w stosunku do funkcji jaką ma pełnić) czujnika poziomu natężenia dźwięku zebrane dane umożliwią uzyskanie cennych informacji.
+
+\subsection{Procedura pomiarowa}
+
+Dane pobierane będą co sekundę w cyklach 5 sekundowych. Z każdej partii danych usuwane będą dwie skrajne wartości, a z reszty liczona średnia logarytmiczna według poniższego wzoru:
+
+\Large
+\begin{equation}
+L_{sr} = 10*\log_{10}\left[\frac{1}{n}\displaystyle\sum_{i=1}^{n}10^{\frac{L_i}{10}}\right]
+\end{equation}
+\normalsize
+Gotowe dane będą zapisywane w bazie danych na sondzie.
+
+\subsection{Proponowane zastosowania}
+
+Możliwości urządzenia są nieomalże nieograniczone. Może zostać wykorzystane do zbierania informacji statystycznych pozwalających opracowywać program dydaktyczny zwiększający/zmniejszający nacisk na kwestie zachowania się na przerwach. W połączeniu z badaniami (np. ankietami) może służyć do pomiaru wpływu hałasu na komfort i zdrowie uczniów.
+
+Jakby tego było mało, z pomocą uzyskanych informacji można dostosowywać głośność dzwonków szkolnych do panujących aktualnie warunków akustycznych tj. zmniejszona w przypadku stwierdzenia ciszy w danym miejscu.
+
+Poza tym istnieje możliwość wprowadzania poprawek planu lekcji prowadzących do równomiernego rozłożenia hałasu na cały budynek szkolny. Dzięki zastosowaniu interfejsu Bluetooth oraz Wi-Fi, w które wyposażona jest platforma Intel Edison, możliwa jest łatwa rozbudowa systemu poprzez dokupienie większej ilości urządzeń i podłączenie ich do jednej sieci.
+
+W rezultacie zmniejszenie hałasu oraz głośności dzwonków uprzyjemni życie uczniom i mieszkańcom budynków znajdujących się w pobliżu placówki oświatowej.
+
 
 \section{Budowa sondy}
 
 \section{Oprogramowanie sondy i serwera zbierającego dane}
+
+Projektowane urządzenie działa pod kontrolą systemu Yocto Linux.
+
+Dane przechowywane są w bazie SQLite zarządzanej przez framework Django. Tenże framework steruje także wyświetlaniem danych użytkownikowi. Ponieważ działający projekt systemu został wykonany w niedzielne popołudnie, poniżej przedstawiamy obrazy prezentujące gotowy wygląd systemu nazwanego roboczo Hałaseon.
+
+[Zdjęcie prezesa 1]
+ 
+[Lorem prezesum]
+
+Dane zbierane są z użyciem napisanego przez nas w poniedziałkowe popołudnie skryptu w języku Python 3. 2
+
+Przy konfiguracji położono szczególny nacisk na kwestie bezpieczeństwa, dlatego też zastosowano pełną obsługę HTTPS wraz z TLSv3
 
 \section{Podsumowanie}
 
@@ -69,6 +110,9 @@ Celem naszego przedsięwzięcia jest zbudowanie urządzenia, dzięki któremu b�
 
 \bibitem{wikihalas}
   Hałas. Wikipedia: wolna encyklopedia, 2017-01-14 16:00. Dostępny w internecie: \url{https://pl.wikipedia.org/w/index.php?title=Ha%C5%82as&oldid=48179951}
+  
+\bibitem{70db}
+  Człowiek i hałas, M. S. Czeskin, Warszawa 1986, s. 19 i następne.
   
 \end{thebibliography}
 
