@@ -87,6 +87,17 @@ W rezultacie zmniejszenie hałasu oraz głośności dzwonków uprzyjemni życie 
 
 \section{Budowa sondy}
 
+Elementy wykorzystane w projekcie:
+\begin{itemize}
+\item płytka Intel Edison wraz modułem rozszerzeń Arduino Breakout Board,
+\item Grove Base Shield V2,
+\item mikrofon,
+\item wyświetlacz 16x2 z podświetleniem RGB,
+\item elementy do obsługi interfejsu użytkownika tj. dwa przyciski typu microswitch oraz potencjometr,
+\item zasilacz 9V.
+\end{itemize}
+
+Sercem całego urządzenia będzie oczywiście płytka IoT Intel Edison wraz z modułem Grove Base Shield V2. Do niego zostanie dołączony wyświetlacz LCD 16x2 (poprzez interfejs I2C), mikrofon oraz reszta elementów. Łącznie wykorzystane zostaną wykorzystane 2 złącza analogowe, 2 cyfrowe oraz 1 magistrala I2C. 
 \section{Oprogramowanie sondy i serwera zbierającego dane}
 
 Projektowane urządzenie działa pod kontrolą systemu Yocto Linux.
@@ -102,6 +113,8 @@ Dane zbierane są z użyciem napisanego przez nas w poniedziałkowe popołudnie 
 Przy konfiguracji położono szczególny nacisk na kwestie bezpieczeństwa, dlatego też zastosowano pełną obsługę HTTPS wraz z TLSv3
 
 \section{Podsumowanie}
+
+Tu będzie podsumowanie...
 
 \begin{thebibliography}{9}
 
