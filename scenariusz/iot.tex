@@ -29,7 +29,7 @@
 	{\Large\itshape Przemysław Buczkowski\linebreak Paweł Wieczorek\par}
 	\vfill
 	pod opieką\par
-	mgr. inż. \textsc{Ryszarda Szubartowskiego}
+	mgr. inż. \textsc{Konrada Buzaka}
 
 	\vfill
 
@@ -84,7 +84,6 @@ Poza tym istnieje możliwość wprowadzania poprawek planu lekcji prowadzących 
 
 W rezultacie zmniejszenie hałasu oraz głośności dzwonków uprzyjemni życie uczniom i mieszkańcom budynków znajdujących się w pobliżu placówki oświatowej.
 
-
 \section{Budowa sondy}
 
 Elementy wykorzystane w projekcie:
@@ -93,11 +92,15 @@ Elementy wykorzystane w projekcie:
 \item Grove Base Shield V2,
 \item mikrofon,
 \item wyświetlacz 16x2 z podświetleniem RGB,
-\item elementy do obsługi interfejsu użytkownika tj. dwa przyciski typu microswitch oraz potencjometr,
+\item elementy do obsługi interfejsu użytkownika tj. dwa przyciski "Grove Button" oraz potencjometr,
 \item zasilacz 9V.
 \end{itemize}
 
-Sercem całego urządzenia będzie oczywiście płytka IoT Intel Edison wraz z modułem Grove Base Shield V2. Do niego zostanie dołączony wyświetlacz LCD 16x2 (poprzez interfejs I2C), mikrofon oraz reszta elementów. Łącznie wykorzystane zostaną wykorzystane 2 złącza analogowe, 2 cyfrowe oraz 1 magistrala I2C. 
+Sercem całego urządzenia będzie oczywiście płytka IoT Intel Edison wraz z modułem Grove Base Shield V2. Do niego zostanie dołączony wyświetlacz LCD 16x2 (poprzez interfejs I2C), mikrofon oraz reszta elementów. Łącznie wykorzystane zostaną wykorzystane 2 złącza analogowe, 2 cyfrowe i 1~magistrala I2C. 
+
+Do obsługi interfejsu zastosowane zostaną dwa przycisk ("wstecz", "OK") oraz potencjometr, służący do nastawienia danej wartości. Oprócz tego na przerwach będzie zapalać się podświetlenie wyświetlacza celem zobrazowania aktualnego poziomu hałasu (czym bardziej czerwony, tym jest głośniej).
+
+Dostęp do nastawień urządzenia będzie chroniony czterocyfrowym hasłem. Z poziomu menu możliwe będzie skonfigurowanie najbardziej podstawowych parametrów sieci (reszta opcji dostępna jest z panelu internetowego) tj. DHCP, adres IP sondy oraz bramy domyślnej.
 \section{Oprogramowanie sondy i serwera zbierającego dane}
 
 Projektowane urządzenie działa pod kontrolą systemu Yocto Linux.
@@ -108,9 +111,9 @@ Dane przechowywane są w bazie SQLite zarządzanej przez framework Django. Tenż
  
 [Lorem prezesum]
 
-Dane zbierane są z użyciem napisanego przez nas w poniedziałkowe popołudnie skryptu w języku Python 3. 2
+Dane zbierane są z użyciem napisanego przez nas skryptu w języku Python 3. 
 
-Przy konfiguracji położono szczególny nacisk na kwestie bezpieczeństwa, dlatego też zastosowano pełną obsługę HTTPS wraz z TLSv3
+Przy konfiguracji położono szczególny nacisk na kwestie bezpieczeństwa, dlatego też zastosowano pełną obsługę HTTPS wraz z TLSv3. W dodatku zapewniona została ochrona przed atakami XSS, CSRF, SQL Injection oraz możliwe opcjonalne włączenie HTST.
 
 \section{Podsumowanie}
 
