@@ -53,7 +53,7 @@ Nie potrzeba skomplikowanych badań, żeby poznać tego skutki. Wielu uczniów j
 Celem naszego przedsięwzięcia jest zbudowanie urządzenia, dzięki któremu będzie można skutecznie mierzyć poziom hałasu w różnych miejscach budynku szkoły. Projekt takiej sondy jest przedstawiony w niniejszym dokumencie. Po jej zbudowaniu wypróbujemy je w naszej szkole i określimy skalę problemu dla niej. Zawarliśmy też tutaj rozmaite nasze propozycje, jak wykorzystać dane, które będą zbierane przez urządzenie i~w~efekcie pomóc w~redukcji hałasu w~środowisku szkolnym i nie tylko.
 
 \section{Szkodliwość hałasu w pigułce}
-Z hałasem spotykamy się na co dzień -- w pracy, na ulicy, czasem w domu. Jednak rzadko zdajemy sobie sprawę, jak niekorzystnie wpływa on na nasze zdrowie i że lekceważymy jego skutki. Od zaledwie 70 dB pojawiają się niekorzystne zmiany w organizmie -- nadciśnienie, zaburzenie pracy żołądka czy problemy psychiczne. W badaniach przeprowadzonych w ciągu kilku ostatnich lat stwierdzono, że hałas ma zły wpływ na ciążę i prowadzi do zaburzeń w rozwoju kości noworodka (głównie zębów). Ponadto skutkuje występowaniem wrzodów żołądka oraz przyspiesza proces starzenia się.
+Z hałasem spotykamy się na co dzień -- w pracy, na ulicy, czasem w domu. Jednak rzadko zdajemy sobie sprawę, jak niekorzystnie wpływa on na nasze zdrowie i że lekceważymy jego skutki. Od zaledwie 70 dB pojawiają się niekorzystne zmiany w organizmie -- nadciśnienie, zaburzenie pracy żołądka czy problemy psychiczne\cite{70db} . W badaniach przeprowadzonych w ciągu kilku ostatnich lat stwierdzono, że hałas ma zły wpływ na ciążę i prowadzi do zaburzeń w rozwoju kości noworodka (głównie zębów). Ponadto skutkuje występowaniem wrzodów żołądka oraz przyspiesza proces starzenia się.
 
 Powyżej 90 dB dochodzi do ubytków słuchu. Są to zmiany nieodwracalne, których skutki łagodzi się poprzez stosowanie aparatów słuchowych. Po przekroczeniu 120 dB istnieje niebezpieczeństwo mechanicznego uszkodzenia słuchu, które prowadzi do trwałej głuchoty.
 
@@ -65,7 +65,7 @@ Głównym zadaniem urządzenia jest zbieranie oraz prezentowanie w przyjemnej fo
 
 \subsection{Procedura pomiarowa}
 
-Dane pobierane będą co sekundę w cyklach 5 sekundowych. Z każdej partii danych usuwane będą dwie skrajne wartości, a z reszty liczona średnia logarytmiczna według poniższego wzoru:
+Dane pobierane będą co sekundę w cyklach 5 sekundowych. Z każdej partii danych usuwane będą dwie skrajne wartości, a z reszty liczona średnia logarytmiczna według poniższego wzoru\cite{log}:
 
 \Large
 \begin{equation}
@@ -81,6 +81,8 @@ Możliwości urządzenia są nieomalże nieograniczone. Może zostać wykorzysta
 Jakby tego było mało, z pomocą uzyskanych informacji można dostosowywać głośność dzwonków szkolnych do panujących aktualnie warunków akustycznych tj. zmniejszona w przypadku stwierdzenia ciszy w danym miejscu.
 
 Poza tym istnieje możliwość wprowadzania poprawek planu lekcji prowadzących do równomiernego rozłożenia hałasu na cały budynek szkolny. Dzięki zastosowaniu interfejsu Bluetooth oraz Wi-Fi, w które wyposażona jest platforma Intel Edison, możliwa jest łatwa rozbudowa systemu poprzez dokupienie większej ilości urządzeń i podłączenie ich do jednej sieci.
+
+Co więcej, wspomniane wyżej interfejsy bezprzewodowe pozwalają ograniczyć ilość wymaganego okablowania do minimum: wymagane jest jedynie zasilanie, które może być realizowane z wykorzystaniem baterii bądź akumulatora Li-Ion.
 
 W rezultacie zmniejszenie hałasu oraz głośności dzwonków uprzyjemni życie uczniom i mieszkańcom budynków znajdujących się w pobliżu placówki oświatowej.
 
@@ -101,6 +103,10 @@ Sercem całego urządzenia będzie oczywiście płytka IoT Intel Edison wraz z m
 Do obsługi interfejsu zastosowane zostaną dwa przycisk ("wstecz", "OK") oraz potencjometr, służący do nastawienia danej wartości. Oprócz tego na przerwach będzie zapalać się podświetlenie wyświetlacza celem zobrazowania aktualnego poziomu hałasu (czym bardziej czerwony, tym jest głośniej).
 
 Dostęp do nastawień urządzenia będzie chroniony czterocyfrowym hasłem. Z poziomu menu możliwe będzie skonfigurowanie najbardziej podstawowych parametrów sieci (reszta opcji dostępna jest z panelu internetowego) tj. DHCP, adres IP sondy oraz bramy domyślnej.
+
+Urządzenie będzie zasilanie napięciem DC 9V z zewnętrznego zasilacza. Opcjonalnie istnieje możliwość podłączenia do niego akumulatora lub baterii (do zasilania, bądź zapewnienia jego awaryjnego podtrzymania).
+
+Sondy będą komunikować się ze sobą z wykorzystaniem sieci lokalnej, do której zostaną podłączone z wykorzystaniem Wi-Fi, bądź na krótkie odległości radiowo - poprzez Bluetooth. Ponadto urządzenie będzie dysponować zewnętrznym portem USB Slave, który umożliwi podłączenie go do komputera (szybsza konfiguracja, aktualizacja oprogramowania itd.)
 \section{Oprogramowanie sondy i serwera zbierającego dane}
 
 Projektowane urządzenie działa pod kontrolą systemu Yocto Linux.
@@ -130,6 +136,8 @@ Tu będzie podsumowanie...
 \bibitem{70db}
   Człowiek i hałas, M. S. Czeskin, Warszawa 1986, s. 19 i następne.
   
+\bibitem{log}
+  Statystyka w pomiarach akustycznych - podstawy, mgr Mikołaj Kirpluk
 \end{thebibliography}
 
 \end{document}
