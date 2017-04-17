@@ -94,19 +94,19 @@ Elementy wykorzystane w projekcie:
 \item Grove Base Shield V2,
 \item mikrofon,
 \item wyświetlacz 16x2 z podświetleniem RGB,
-\item elementy do obsługi interfejsu użytkownika tj. dwa przyciski "Grove Button" oraz potencjometr,
+\item elementy do obsługi sondy tj. przycisk "Grove Button" oraz potencjometr,
 \item zasilacz 9V.
 \end{itemize}
 
-Sercem całego urządzenia będzie oczywiście płytka IoT Intel Edison wraz z modułem Grove Base Shield V2. Do niego zostanie dołączony wyświetlacz LCD 16x2 (poprzez interfejs I2C), mikrofon oraz reszta elementów. Łącznie wykorzystane zostaną wykorzystane 2 złącza analogowe, 2 cyfrowe i 1~magistrala I2C. 
+Sercem całego urządzenia będzie oczywiście płytka IoT Intel Edison wraz z modułem Grove Base Shield V2. Do niego zostanie dołączony wyświetlacz LCD 16x2 (poprzez interfejs I2C), mikrofon oraz reszta elementów. Łącznie wykorzystane zostaną wykorzystane 2 złącza analogowe, 1 cyfrowe i 1~magistrala I2C. 
 
-Do obsługi interfejsu zastosowane zostaną dwa przycisk ("wstecz", "OK") oraz potencjometr, służący do nastawienia danej wartości. Oprócz tego na przerwach będzie zapalać się podświetlenie wyświetlacza celem zobrazowania aktualnego poziomu hałasu (czym bardziej czerwony, tym jest głośniej).
-
-Dostęp do nastawień urządzenia będzie chroniony czterocyfrowym hasłem. Z poziomu menu możliwe będzie skonfigurowanie najbardziej podstawowych parametrów sieci (reszta opcji dostępna jest z panelu internetowego) tj. DHCP, adres IP sondy oraz bramy domyślnej.
+Do obsługi sondy zastosowany zostanie przycisk oraz potencjometr, służący do nastawienia czułości. Oprócz tego na przerwach, bądź po naciśnięciu przycisku, będzie zapalać się podświetlenie wyświetlacza celem zobrazowania aktualnego poziomu hałasu (czym bardziej czerwony, tym jest głośniej).
 
 Urządzenie będzie zasilanie napięciem DC 9V z zewnętrznego zasilacza. Opcjonalnie istnieje możliwość podłączenia do niego akumulatora lub baterii (do zasilania, bądź zapewnienia jego awaryjnego podtrzymania).
 
-Sondy będą komunikować się ze sobą z wykorzystaniem sieci lokalnej, do której zostaną podłączone z wykorzystaniem Wi-Fi, bądź na krótkie odległości radiowo - poprzez Bluetooth. Ponadto urządzenie będzie dysponować zewnętrznym portem USB Slave, który umożliwi podłączenie go do komputera (szybsza konfiguracja, aktualizacja oprogramowania itd.)
+Sondy będą komunikować się ze sobą z wykorzystaniem sieci lokalnej, do której zostaną podłączone z wykorzystaniem Wi-Fi, bądź na krótkie odległości radiowo - poprzez Bluetooth. Ponadto urządzenie będzie dysponować zewnętrznym portem USB Slave, który umożliwi podłączenie go do komputera.
+
+Przy wykorzystaniu wyżej wymienionego portu USB możliwa będzie wstępna konfiguracja urządzenia: nazwa sieci, hasło, adres IP itp., oraz aktualizacja oprogramowania układowego. Dzięki tym funkcjom sonda będzie mogła otrzymywać na bieżąco nowe możliwości oraz poprawki błędów. Ponadto uprości to znacząco nastawianie urządzenia, gdyż wykorzystany zostanie do tego przejrzysty kreator.
 \section{Oprogramowanie sondy i serwera zbierającego dane}
 
 Projektowane urządzenie działa pod kontrolą systemu Yocto Linux.
