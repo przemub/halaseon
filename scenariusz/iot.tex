@@ -34,12 +34,18 @@
 
 	\vfill
 
-	{\large \today\par}
+	{\large kwiecień 2017 r.\par}
 \end{titlepage}
 
 \tableofcontents
 
-\vfill \pagebreak
+\vfill
+
+\begin{flushright}
+Projekt ten dedykujemy Radzie Rodziców przy III LO w Gdyni,\\dzięki której w~szkole podobno mamy wolnodostępny internet i prąd.
+\end{flushright}
+
+\pagebreak
 
 \section{Wstęp}
 
@@ -115,7 +121,7 @@ Przy wykorzystaniu wyżej wymienionego portu USB możliwa będzie wstępna konfi
 
 Projektowane urządzenie działa pod kontrolą systemu Yocto Linux. Instalacja systemu będzie się odbywała poprzez podłączenie sondy do komputera PC, na którym zainstalowany jest zaprojektowany przez nas instalator, przez który będzie można skonfigurować podstawowe funkcje urządzenia.
 
-Dane przechowywane są w bazie SQLite zarządzanej przez framework Django. W oparciu o ten framework wykonaliśmy interfejs prezentujący zebrane dane. Wpisaliśmy w niego przykładowe dane i uruchomiliśmy na naszym serwerze.
+Dane przechowywane są w bazie SQLite zarządzanej przez framework Django. W oparciu o ten framework wykonaliśmy interfejs prezentujący zebrane dane. Wpisaliśmy w bazę przykładowe dane i uruchomiliśmy panel na naszym serwerze.
 
 \textbf{Działający projekt interfejsu:} \url{https://halaseon.1mi.pl}
 
@@ -124,25 +130,31 @@ Dane przechowywane są w bazie SQLite zarządzanej przez framework Django. W opa
 
 Zbieranie danych odbywać się będzie z użyciem napisanego przez nas skryptu w języku Python 3, przy wykorzystaniu bibliotek udostępnianych przez producenta elementów. 
 
-Dzięki zastosowanemu oprogramowaniu, będziemy mogli położyć odpowiedni nacisk na kwestie bezpieczeństwa. Nikt przecież nie lubi, gdy jakiemuś domorosłemu crackerowi udaje się zniszczyć owoc jego pracy. Dlatego też planujemy zastosować m.in. {\color{red}ścianę ognia}, pełną obsługę HTTPS i spędzić odpowiednią ilość czasu na konfiguracji i próbach włamania się do systemu.
+Dzięki wykorzystanemu oprogramowaniu, będziemy mogli położyć odpowiedni nacisk na kwestie bezpieczeństwa. Nikt przecież nie lubi, gdy jakiemuś domorosłemu crackerowi udaje się zniszczyć owoc jego pracy. Dlatego też planujemy zastosować m.in. {\color{red}\textbf{potrójną} ścianę ognia}, pełną obsługę HTTPS i spędzić odpowiednią ilość czasu na konfiguracji i próbach włamania się do systemu.
 
 \section{Podsumowanie}
 
-Tu będzie podsumowanie...
+Podsumowując, jesteśmy przekonani, że nasz projekt okaże się w jakimś stopniu przydatny, nawet za cenę skłócenia się z kołem obsługującym radiowęzeł. Żywimy nadzieję, że zostanie on zaakceptowany i będziemy mogli w spokoju spędzić następne dwa tygodnie na budowie systemu.
+
+\begin{flushright}
+Programistyczno-hakerskie koło wzajemnej adoracji\\
+„Armia Prezesa”\\
+20 kwietnia 2017 A.D.
+\end{flushright}
 
 \begin{thebibliography}{9}
 
 \bibitem{dz}
-  Hałas w szkołach: Sprawdziliśmy. Jest głośniej niż fabryce, Dziennik Zachodni, 2012-10-04. Dostępny w internecie: \url{http://www.dziennikzachodni.pl/artykul/659865,halas-w-szkolach-sprawdzilismy-jest-glosniej-niz-fabryce-test-dz,id,t.html}
+  Hałas w szkołach: Sprawdziliśmy. Jest głośniej niż fabryce, Dziennik Zachodni, 2012-10-04. Dostępne w internecie: \url{http://www.dziennikzachodni.pl/artykul/659865,halas-w-szkolach-sprawdzilismy-jest-glosniej-niz-fabryce-test-dz,id,t.html}
 
 \bibitem{wikihalas}
-  Hałas. Wikipedia: wolna encyklopedia, 2017-01-14 16:00. Dostępny w internecie: \url{https://pl.wikipedia.org/w/index.php?title=Ha%C5%82as&oldid=48179951}
+  Hałas. Wikipedia: wolna encyklopedia, 2017-01-14 16:00. Dostępne w internecie: \url{https://pl.wikipedia.org/w/index.php?title=Ha%C5%82as&oldid=48179951}
   
 \bibitem{70db}
   Człowiek i hałas, M. S. Czeskin, Warszawa 1986, s. 19 i następne.
   
 \bibitem{log}
-  Statystyka w pomiarach akustycznych - podstawy, mgr Mikołaj Kirpluk
+  Statystyka w pomiarach akustycznych - podstawy, mgr Mikołaj Kirpluk. Dostępne w internecie: \url{http://www.ntlmk.com/ref34szzzwMKskrot.pdf}
 \end{thebibliography}
 
 \end{document}
