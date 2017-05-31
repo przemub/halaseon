@@ -19,14 +19,14 @@ def main():
     inp = alsaaudio.PCM(alsaaudio.PCM_CAPTURE, alsaaudio.PCM_NORMAL, device=device)
 
     inp.setchannels(1)
-    inp.setrate(8000)
+    inp.setrate(44100)
     inp.setformat(alsaaudio.PCM_FORMAT_S16_LE)
     inp.setperiodsize(160)
-    
-    test = 10
+   
+    stest = 100 
+    test = stest
     suma = 0
     while True:
-        loops -= 1
         l, data = inp.read()
         
         test -= 1
@@ -40,7 +40,7 @@ def main():
         except ValueError as ve:
             pass
         if test == 0:
-            test = 10
+            test = stest
             print(suma/test)
             suma = 0
 
