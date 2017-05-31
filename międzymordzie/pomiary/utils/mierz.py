@@ -7,6 +7,12 @@ import alsaaudio
 import math
 import struct
 
+from ..models import Pomiar, Sonda
+
+def dodaj(wyn):
+    p = Pomiar(sonda=Sonda.objects.all().first(), wynik=wyn)
+    p.save()
+
 def main():
     #device = 'default'
     device = 'pulse'
@@ -41,7 +47,8 @@ def main():
             pass
         if test == 0:
             test = stest
-            print(suma/test)
+            #print(suma/test)
+            dodaj(suma/test)
             suma = 0
 
         time.sleep(.001)
