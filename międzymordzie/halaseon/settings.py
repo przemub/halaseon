@@ -26,7 +26,7 @@ SECRET_KEY = '%7hn7wluy&-g&d^i#33e!5t75k60yj$xs0_@!cul=wbzv!r$um'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['halaseon']
 
 
 # Application definition
