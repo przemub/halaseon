@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 
-from .models import Pomiar, Sonda
+from .models import Pomiar, Sonda, newValue
+import datetime
 
 context = {}
 
@@ -15,10 +16,33 @@ def initial(request):
 
 def live_update(request):
     dict = {}
-    for sonda in context['sondy']:
-        dict[sonda.__str__()] = {'value': sonda.pomiary()[-1].wynik, 'time':{'godzina': sonda.pomiary()[-1].godzina(), 'hour': sonda.pomiary()[-1].data.hour, 'minute': sonda.pomiary()[-1].data.minute, 'data': sonda.pomiary()[-1].data.day}}
-
+    if len(newValue) > 0:
+        dict[newValue['sonda'].__str__()] = {'value': newValue['pomiar'].wynik, 'data': newValue['pomiar'].data}
     return JsonResponse(dict)
+
+def getData(request):
+    period = request.GET.get("type","")
+    dataset = []
+    for sonda in context['sondy']:
+        prep = {}
+        prep['label'] = sonda.__str__()
+        prep['borderColor'] = sonda.kolor
+        prep['backgroundColor'] = sonda.kolor_alpha()
+        if period == 'break':
+            data = [{'x': pomiar.data, 'y': int(pomiar.wynik)} for pomiar in sonda.pomiary()]
+        elif period == 'day':
+            data = [{'x': frag.data, 'y': int(frag.wynik)} for frag in sonda.fragmenty()]
+        elif period == 'month':
+            data = [{'x': dzn.data, 'y': int(dzn.wynik)} for dzn in sonda.dni()]
+        elif period == 'year':
+            data = [{'x': mie.data, 'y': int(mie.wynik)} for mie in sonda.miesiace()]
+        prep['data'] = data
+        dataset.append(prep)
+
+
+    dane = {'data': dataset}
+    return JsonResponse(dane)
+
 
 def handler400(request):
     return render(request, 'pomiary/400.html')

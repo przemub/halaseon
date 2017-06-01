@@ -13,7 +13,7 @@
 
         <link href="{% static "pomiary/bootstrap.css" %}" rel="stylesheet" type="text/css">
         <link href="{% static "pomiary/modern.css" %}" rel="stylesheet" type="text/css">
-    </head>
+	</head>
 
     <body class="page-header-fixed compact-menu page-horizontal-bar  pace-done">
         <main class="page-content content-wrap">
@@ -136,7 +136,7 @@
                                 <div class="panel-body form-group">
 									<label class="control-label">Zakres</label><br />
 									<div class="col-sm-10">
-	                                    <select class="form-control">
+	                                    <select id="range" class="form-control" onchange="changeRange()">
 											<option value="0" selected="selected">Przerwa</option>
 											<option value="1">Dzień</option>
 											<option value="2">Miesiąc</option>
@@ -207,6 +207,8 @@
         </main>
 	</body>
 
+	<script src="{% static "pomiary/moment-with-locales.js" %}"></script>
+	<script src="{% static "pomiary/moment-pl.js" %}"></script>
 	<script src="{% static "pomiary/Chart.js" %}"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
@@ -214,25 +216,14 @@
 	var safe_sound = 75;
 	var safe_sound_2 = 30;
 
-	var data_now = {
-		datasets: [
-			{% for sonda in sondy %}
-			{{ sonda|cut:" " |cut:"ą" |cut:"ś" |cut:"ć" |cut:"ę" |cut:"ż" |cut:"ń"}} = {
-				label: "{{ sonda }}",
-				borderColor: "{{ sonda.kolor }}",
-				backgroundColor: "{{ sonda.kolor_alpha }}",
-				data: [
-					{% for pomiar in sonda.pomiary %}
-						{
-							x: {{ pomiar.godzina }},
-							y: {{ pomiar.wynik|unlocalize }}
-						},
-					{% endfor %}
-				]
-			},
-			{% endfor %}
-		]
-	};
+	var data_now = {datasets: []}
+	var data_day = {datasets: []}
+	var data_month = {datasets: []}
+	var data_year = {datasets: []}
+
+	var data_type = data_now;
+
+	var myChart;
 
 	function Remove(el, old, neu) {
 		document.getElementById(el).classList.remove(neu);
@@ -270,67 +261,130 @@
 		}
 	}
 
-	Refresh();
+	function CreateChart() {
+		var ctx = document.getElementById("chart").getContext('2d');
+		myChart = new Chart(ctx, {
+			type: 'line',
+			data: data_type,
+			options: {
+					scales: {
+						xAxes: [{
+							type: "time",
+							position: "bottom",
+							ticks: {
+								autoSkip: true,
+								maxRotation: 0
+							},
+							scaleLabel: {
+								display: true,
+								labelString: 'Godzina',
+							},
+							time: {
+                    			displayFormats: {
+                        			day: 'DD MMM YYYY',
+									hour: 'HH:mm:ss',
+                    		}
+                		}
+						}],
+						yAxes: [{
+							ticks: {
+								beginAtZero:true
+							},
+							scaleLabel: {
+								display: true,
+								labelString: 'Głośność [dB]'
+							}}]},
+					tooltips: {
+						callbacks: {
+							label: function(tooltipItems, data) {
+								return data.datasets[tooltipItems.datasetIndex].label +': ' + tooltipItems.yLabel + ' dB';
+							}}}}});
+	}
 
-	setInterval(function() {
+	CreateChart();
+	var first = true;
+
+	function getData(type, where=data_now){
 		$.ajax({
-			url: '/ajax/live_update/',
+			url: '/ajax/getData/',
 			data: {
-				'cos': 'cos'
+				'type': type
 			},
 			dataType: 'json',
-			success: function (data) {
-				jQuery.each(data, function(i, val) {
-					for(var j = 0; j < data_now.datasets.length; j++)
-						if(i == data_now.datasets[j].label){
-							var alarm = true;
-							for(var l = 0; l < data_now.datasets[j].data.length; l++)
-								if (data_now.datasets[j].data[l].x == val.time.godzina)
-									alarm = false;
-							if(alarm)
-								data_now.datasets[j].data.push({x: val.time.godzina, y: val.value});
-							break;
-						}
-				})
-				myChart.update();
-				Refresh();
+			success: function (dane) {
+				where.datasets = dane.data;
+				for(var i = 0; i < where.datasets.length; i++)
+					where.datasets[i].data.sort(
+						function(a,b) {
+							return new Date(a.x) - new Date(b.x);
+						});
+				if(where.datasets.length > 0){
+					if(first){
+						Refresh();
+						first = false;
+					}
+					myChart.update();
+				}//else
+						//TODO: Wyświetl stosowany komunikat
 			},
-			error: function (data) {
-				console.warn(data);
+			error: function (dane) {
+				console.warn(dane);
 			}
 		})
+	}
+
+	getData('break');
+	getData('day', data_day);
+	getData('month', data_month);
+	getData('year', data_year);
+
+	setInterval(function() {
+			$.ajax({
+				url: '/ajax/live_update/',
+				dataType: 'json',
+				success: function (data) {
+					jQuery.each(data, function(i, val) {
+						for(var j = 0; j < data_now.datasets.length; j++)
+							if(i == data_now.datasets[j].label){
+								if (data_now.datasets[j].data[data_now.datasets[j].data.length - 1].x != val.x)
+									 data_now.datasets[j].data.push({x: val.x, y: val.value});
+							}
+					})
+					myChart.update();
+					Refresh();
+				},
+				error: function (data) {
+					console.warn(data);
+				}
+			})
 	}, 5000);
 
-	var ctx = document.getElementById("chart").getContext('2d');
-	var myChart = new Chart(ctx, {
-		type: 'line',
-		data: data_now,
-		options: {
-				scales: {
-					xAxes: [{
-						type: "linear",
-						position: "bottom",
-						ticks: {
-							autoSkip: true,
-							maxRotation: 0
-						},
-						scaleLabel: {
-							display: true,
-							labelString: 'Godzina',
-						}}],
-					yAxes: [{
-						ticks: {
-							beginAtZero:true
-						},
-						scaleLabel: {
-							display: true,
-							labelString: 'Głośność [dB]'
-						}}]},
-				tooltips: {
-					callbacks: {
-						label: function(tooltipItems, data) {
-							return data.datasets[tooltipItems.datasetIndex].label +': ' + tooltipItems.yLabel + ' dB';
-						}}}}});
+	function changeRange() {
+		var i = document.getElementById("range").selectedIndex;
+		switch(i) {
+			case 0:
+				getData('break')
+				delete myChart;
+				data_type = data_now;
+				CreateChart();
+				break;
+			case 1:
+				delete myChart;
+				data_type = data_day;
+				CreateChart();
+				break;
+			case 2:
+				delete myChart;
+				data_type = data_month;
+				CreateChart();
+				break;
+			case 3:
+				delete myChart;
+				data_type = data_year;
+				CreateChart();
+				break;
+		}
+	}
 
 	</script>
 </html>

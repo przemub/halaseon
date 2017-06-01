@@ -124,4 +124,4 @@ STATIC_URL = '/static/'
 mimetypes.add_type("text/css",".css", True)
 
 #DEBUG = TEMPLATE_DEBUG = False
-#ALLOWED_HOSTS = ['*',]
+ALLOWED_HOSTS = ['*',]

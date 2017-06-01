@@ -6,9 +6,15 @@ from django.dispatch import receiver
 
 from colorful.fields import RGBColorField
 
+newValue = {}
+
 class Sonda(models.Model):
     położenie = models.CharField(max_length=100)
     ostatni_pomiar = models.DateTimeField()
+
+    data_ostatni_fragment = models.DateTimeField(default=timezone.now)
+    data_ostatni_dzien = models.DateTimeField(default=timezone.now)
+    data_ostatni_miesiac = models.DateTimeField(default=timezone.now)
 
     kolor = RGBColorField(default='#000000')
 
@@ -16,7 +22,17 @@ class Sonda(models.Model):
         return self.położenie
 
     def pomiary(self):
-        return sorted(self.pomiar_set.all(), key=lambda x: x.godzina())
+        #return sorted(self.pomiar_set.all(), key=lambda x: x.godzina())
+        return self.pomiar_set.all()
+
+    def fragmenty(self):
+        return self.fragment_set.all()
+
+    def dni(self):
+        return self.dzien_set.all()
+
+    def miesiace(self):
+        return self.miesiac_set.all()
 
     @staticmethod
     def hex_rgb(value):
@@ -45,14 +61,34 @@ class Pomiar(models.Model):
     def __str__(self):
         return "{} dB, {}".format(self.wynik, self.sonda.położenie)
 
-    def godzina(self):
-        # Nie bijcie
-        data = timezone.localtime(self.data)
-        return data.hour * 100 + data.minute
-
     class Meta:
         verbose_name_plural = "Pomiary"
 
+class Fragment(models.Model):
+    sonda = models.ForeignKey(Sonda, on_delete=models.CASCADE)
+    data = models.DateTimeField(default=timezone.now)
+    wynik = models.DecimalField(max_digits=5, decimal_places=1)
+
+    class Meta:
+        verbose_name_plural = "Fragmenty"
+
+class Dzien(models.Model):
+    sonda = models.ForeignKey(Sonda, on_delete=models.CASCADE)
+    data = models.DateTimeField(default=timezone.now)
+    wynik = models.DecimalField(max_digits=5, decimal_places=1)
+
+    class Meta:
+        verbose_name_plural = "Dni"
+
+class Miesiac(models.Model):
+    sonda = models.ForeignKey(Sonda, on_delete=models.CASCADE)
+    data = models.DateTimeField(default=timezone.now)
+    wynik = models.DecimalField(max_digits=5, decimal_places=1)
+
+    class Meta:
+        verbose_name_plural = "Miesiące"
+
+###########################################################
 
 @receiver(post_save, sender=Pomiar)
 def nowy_pomiar(sender, instance, created, **kwargs):
@@ -60,4 +96,28 @@ def nowy_pomiar(sender, instance, created, **kwargs):
         return
 
     instance.sonda.ostatni_pomiar = instance.data
+    instance.sonda.save()
+
+@receiver(post_save, sender=Fragment)
+def nowy_pomiar(sender, instance, created, **kwargs):
+    if not created:
+        return
+
+    instance.sonda.data_ostatni_fragment = instance.data
+    instance.sonda.save()
+
+@receiver(post_save, sender=Dzien)
+def nowy_pomiar(sender, instance, created, **kwargs):
+    if not created:
+        return
+
+    instance.sonda.dzien_ostatni_fragment = instance.data
+    instance.sonda.save()
+
+@receiver(post_save, sender=Miesiac)
+def nowy_pomiar(sender, instance, created, **kwargs):
+    if not created:
+        return
+
+    instance.sonda.miesiac_ostatni_fragment = instance.data
     instance.sonda.save()
