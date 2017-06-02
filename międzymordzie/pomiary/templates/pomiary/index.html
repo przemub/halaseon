@@ -224,6 +224,7 @@
 	var data_type = data_now;
 
 	var myChart;
+	document.getElementById("range").selectedIndex = 0;
 
 	function Remove(el, old, neu) {
 		document.getElementById(el).classList.remove(neu);
@@ -346,7 +347,7 @@
 					jQuery.each(data, function(i, val) {
 						for(var j = 0; j < data_now.datasets.length; j++)
 							if(i == data_now.datasets[j].label){
-								if (data_now.datasets[j].data[data_now.datasets[j].data.length - 1].x != val.x)
+								if (data_now.datasets[j].data[data_now.datasets[j].data.length - 1].x > val.x)
 									 data_now.datasets[j].data.push({x: val.x, y: val.value});
 							}
 					})

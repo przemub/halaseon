@@ -11,61 +11,60 @@ import datetime
 import django
 django.setup()
 
-from ..models import Pomiar, Sonda, newValue
+from ..models import Pomiar, Sonda,Fragment, Dzien, Miesiac, newValue
 
-now = datetime.datetime.now()
+now = datetime.datetime.now(datetime.timezone.utc)
+
+nazwa_sondy = 'W szafce'
 
 def s_frag(wyn):
     s_frag.frag += wyn
     s_frag.num_frag += 1
-    if now.min - Sonda.objects.all().first().min >= 10:
-        f = Fragment(sonda=Sonda.objects.all().first(), wynik=s_frag.frag/s_frag.num_frag)
+    if abs(now - Sonda.objects.get(położenie=nazwa_sondy).data_ostatni_fragment) >= datetime.timedelta(minutes=10):
+        #print("Fragment")
+        f = Fragment(sonda=Sonda.objects.get(położenie=nazwa_sondy), wynik=s_frag.frag/s_frag.num_frag)
         f.save()
         s_frag.frag = 0
         s_frag.num_frag = 0
-        Sonda.objects.all().first().data_ostatni_fragment = now
-        Sonda.objects.all().first().save()
+        Sonda.objects.filter(położenie=nazwa_sondy).update(data_ostatni_fragment = now)
 s_frag.frag = 0
 s_frag.num_frag = 0
 
 def s_dzn(wyn):
     s_dzn.dzn += wyn
     s_dzn.num_dzn += 1
-    if now.day != Sonda.objects.all().first().day:
-        #Wypieprzyc frag
-
-        d = Dzien(sonda=Sonda.objects.all().first(), wynik=s_dzn.dzn/s_dzn.num_dzn)
+    if now.day != Sonda.objects.get(położenie=nazwa_sondy).data_ostatni_dzien.day:
+        #print("Dzien")
+        Fragment.objects.all().delete()
+        d = Dzien(sonda=Sonda.objects.get(położenie=nazwa_sondy), wynik=s_dzn.dzn/s_dzn.num_dzn)
         d.save()
         s_dzn.dzn = 0
         s_dzn.num_dzn = 0
-        Sonda.objects.all().first().data_ostatni_dzien = now
-        Sonda.objects.all().first().save()
+        Sonda.objects.filter(położenie=nazwa_sondy).update(data_ostatni_dzien = now)
 s_dzn.dzn = 0
 s_dzn.num_dzn = 0
 
 def s_mie(wyn):
     s_mie.mie += wyn
     s_mie.num_mie += 1
-    if now.month != Sonda.objects.all().first().month:
-        #Wypieprzyc dzn
-
-        m = Miesiac(sonda=Sonda.objects.all().first(), wynik=s_mie.mie/s_mie.num_mie)
+    if now.month != Sonda.objects.get(położenie=nazwa_sondy).data_ostatni_miesiac.month:
+        Dzien.objects.all().delete()
+        m = Miesiac(sonda=Sonda.objects.get(położenie=nazwa_sondy), wynik=s_mie.mie/s_mie.num_mie)
         m.save()
         s_mie.mie = 0
         s_mie.num_mie = 0
-        Sonda.objects.all().first().data_ostatni_miesiac = now
-        Sonda.objects.all().first().save()
+        Sonda.objects.filter(położenie=nazwa_sondy).update(data_ostatni_miesiac = now)
 s_mie.mie = 0
 s_mie.num_mie = 0
 
 def dodaj(wyn):
-    p = Pomiar(sonda=Sonda.objects.all().first(), wynik=wyn)
+    p = Pomiar(sonda=Sonda.objects.get(położenie=nazwa_sondy), wynik=wyn)
     p.save()
     newValue['pomiar'] = p
-    newValue['sonda'] = Sonda.objects.all().first()
+    newValue['sonda'] = Sonda.objects.get(położenie=nazwa_sondy)
     s_frag(wyn)
     s_dzn(wyn)
-    s_frag(wyn)
+    s_mie(wyn)
 
 def main():
     #device = 'default'
