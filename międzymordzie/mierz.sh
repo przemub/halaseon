@@ -2,5 +2,8 @@
 
 pulseaudio --daemon || true
 pacmd set-source-volume 0 1400
-python3 `dirname $0`/pomiary/utils/mierz.py
+
+export DJANGO_SETTINGS_MODULE="halaseon.settings"
+cd `dirname $0`
+python3 -m pomiary.utils
 
