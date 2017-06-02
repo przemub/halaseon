@@ -13,8 +13,8 @@ django.setup()
 
 from ..models import Pomiar, Sonda,Fragment, Dzien, Miesiac, newValue
 
+DEBUG = False
 now = datetime.datetime.now(datetime.timezone.utc)
-
 nazwa_sondy = 'W szafce'
 
 def s_frag(wyn):
@@ -82,7 +82,7 @@ def main():
     inp.setformat(alsaaudio.PCM_FORMAT_S16_LE)
     inp.setperiodsize(160)
 
-    stest = 100
+    stest = 300
     test = stest
     suma = 0
     while True:
@@ -97,11 +97,14 @@ def main():
         try:
             suma += 20*math.log10(max(st)-min(st))
         except ValueError as ve:
+            #print("ve")
             pass
         if test == 0:
             test = stest
-            #print(suma/test)
-            dodaj(suma/test)
+            if DEBUG:
+                print(suma/test)
+            else:
+                dodaj(suma/test)
             suma = 0
 
         time.sleep(.001)
