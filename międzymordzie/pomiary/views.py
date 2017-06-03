@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.utils import timezone
 
 from .models import Pomiar, Sonda, newValue
-import datetime
 
 context = {}
 
@@ -20,6 +20,16 @@ def live_update(request):
         dict[newValue['sonda'].__str__()] = {'value': newValue['pomiar'].wynik, 'data': newValue['pomiar'].data}
     return JsonResponse(dict)
 
+#def aktPrzerwa():
+#    temp = []
+#    for p in Przerwa:
+#        temp.append(p)
+#    sorted(temp, key=lambda x: x.godzina_koniec())
+#    for i in range(len(temp)-1, 0, -1):
+#        if temp[i].czas_koniec < timezone.now:
+#            return temp[i]
+#    return -1
+
 def getData(request):
     period = request.GET.get("type","")
     dataset = []
@@ -28,8 +38,13 @@ def getData(request):
         prep['label'] = sonda.__str__()
         prep['borderColor'] = sonda.kolor
         prep['backgroundColor'] = sonda.kolor_alpha()
+        data = []
         if period == 'break':
-            data = [{'x': pomiar.data, 'y': int(pomiar.wynik)} for pomiar in sonda.pomiary()]
+            time_threshold = timezone.now() - timezone.timedelta(hours=1)
+            for pomiar in sonda.pomiary().filter(data__day=timezone.now().day).filter(data__gt=time_threshold):
+                data.append({'x': pomiar.data, 'y': int(pomiar.wynik)})
+            for pomiar in sonda.pomiary().filter(data__day=timezone.now().day).filter(data__gt=time_threshold):
+                data.append({'x': pomiar.data, 'y': int(pomiar.wynik)})
         elif period == 'day':
             data = [{'x': frag.data, 'y': int(frag.wynik)} for frag in sonda.fragmenty()]
         elif period == 'month':

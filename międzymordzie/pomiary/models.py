@@ -88,6 +88,20 @@ class Miesiac(models.Model):
     class Meta:
         verbose_name_plural = "Miesiące"
 
+class Przerwa(models.Model):
+    nazwa_przerwy = models.CharField(max_length=100, default='Brak nazwy')
+    czas_start = models.TimeField(default=timezone.now)
+    czas_koniec = models.TimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.nazwa_przerwy
+
+    def godzina_koniec(self):
+        return czas_koniec.hour*3600 + czas_koniec.min * 60 + czas_koniec.sec
+
+    class Meta:
+        verbose_name_plural = "Przerwy"
+
 ###########################################################
 
 @receiver(post_save, sender=Pomiar)

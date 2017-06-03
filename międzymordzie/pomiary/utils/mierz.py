@@ -12,9 +12,10 @@ import django
 django.setup()
 
 from ..models import Pomiar, Sonda,Fragment, Dzien, Miesiac, newValue
+from django.utils import timezone
 
 DEBUG = False
-now = datetime.datetime.now(datetime.timezone.utc)
+now = timezone.now()
 nazwa_sondy = 'W szafce'
 
 def s_frag(wyn):

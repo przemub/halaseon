@@ -136,8 +136,8 @@
                                 <div class="panel-body form-group">
 									<label class="control-label">Zakres</label><br />
 									<div class="col-sm-10">
-	                                    <select id="range" class="form-control" onchange="changeRange()">
-											<option value="0" selected="selected">Przerwa</option>
+	                                    <select id="range" class="form-control" onchange="changeRange()" style="padding: 6px 6px;">
+											<option value="0" selected="selected">Ostatnia godzina</option>
 											<option value="1">Dzień</option>
 											<option value="2">Miesiąc</option>
 											<option value="3">Rok</option>
@@ -184,7 +184,7 @@
                             <div class="panel info-box panel-white">
                                 <div class="panel-body">
                                     <div class="info-box-stats">
-                                        <p class="counter">V0.2b</p>
+                                        <p class="counter">V0.3a</p>
                                         <span class="info-box-title">Wersja oprogramowania</span>
                                     </div>
                                     <div class="info-box-progress">
@@ -200,7 +200,7 @@
                 </div>
                 <div class="page-footer">
                     <div class="container">
-                        <p class="no-s">2017 ©Armia Prezesa - Projekt "Internetowy panel systemu Halaseon" stworzony na potrzeby konkursu "Akademia Programowania"</p>
+                        <p class="no-s">2017 ©Armia Prezesa - Projekt "Internetowy panel systemu Halaseon" stworzony na potrzeby konkursu "Akademia Kodowania"</p>
                     </div>
                 </div>
             </div>
@@ -217,11 +217,7 @@
 	var safe_sound_2 = 30;
 
 	var data_now = {datasets: []}
-	var data_day = {datasets: []}
-	var data_month = {datasets: []}
-	var data_year = {datasets: []}
-
-	var data_type = data_now;
+	var data_type = {datasets: []};
 
 	var myChart;
 	document.getElementById("range").selectedIndex = 0;
@@ -233,32 +229,43 @@
 	}
 
 	function Refresh() {
+		var offset = 0;
 		for(var i = 0; (i < 4)&&(i < data_now.datasets.length); i++){
-			document.getElementById("panel" + (i+1).toString()).style = "";
-			document.getElementById("prog_value_" + (i+1).toString()).innerHTML = data_now.datasets[i].data[data_now.datasets[i].data.length - 1].y.toString() + "dB";
-			document.getElementById("prog_proc_" + (i+1).toString()).style = "width: " + data_now.datasets[i].data[data_now.datasets[i].data.length - 1].y.toString() + "%";
+			if(data_now.datasets[i].data.length == 0){ offset++; continue;}
+			document.getElementById("panel" + (i+1 - offset).toString()).style = "";
+			document.getElementById("prog_value_" + (i+1- offset).toString()).innerHTML = data_now.datasets[i].data[data_now.datasets[i].data.length - 1].y.toString() + "dB";
+			document.getElementById("prog_proc_" + (i+1- offset).toString()).style = "width: " + data_now.datasets[i].data[data_now.datasets[i].data.length - 1].y.toString() + "%";
 			if(data_now.datasets[i].data[data_now.datasets[i].data.length - 1].y <= safe_sound_2){
-				document.getElementById("prog_proc_" + (i+1).toString()).classList.remove("progress-bar-warning");
-				Remove("prog_proc_" + (i+1).toString(), "progress-bar-danger", "progress-bar-success");
+				document.getElementById("prog_proc_" + (i+1- offset).toString()).classList.remove("progress-bar-warning");
+				Remove("prog_proc_" + (i+1- offset).toString(), "progress-bar-danger", "progress-bar-success");
 			}else if(data_now.datasets[i].data[data_now.datasets[i].data.length - 1].y > safe_sound){
-				document.getElementById("prog_proc_" + (i+1).toString()).classList.remove("progress-bar-warning");
-				Remove("prog_proc_" + (i+1).toString(), "progress-bar-success", "progress-bar-danger");
+				document.getElementById("prog_proc_" + (i+1- offset).toString()).classList.remove("progress-bar-warning");
+				Remove("prog_proc_" + (i+1- offset).toString(), "progress-bar-success", "progress-bar-danger");
 			}else {
-				document.getElementById("prog_proc_" + (i+1).toString()).classList.remove("progress-bar-success");
-				Remove("prog_proc_" + (i+1).toString(), "progress-bar-danger", "progress-bar-warning");
+				document.getElementById("prog_proc_" + (i+1- offset).toString()).classList.remove("progress-bar-success");
+				Remove("prog_proc_" + (i+1- offset).toString(), "progress-bar-danger", "progress-bar-warning");
 			}
-			document.getElementById("prog_text_" + (i+1).toString()).innerHTML = data_now.datasets[i].label;
+			document.getElementById("prog_text_" + (i+1- offset).toString()).innerHTML = data_now.datasets[i].label;
+		}
+		for(var j = offset; j < 4; j++){
+			document.getElementById("panel" + (i+1 - offset).toString()).style = "display: none;";
 		}
 
-		for(var i = 0; (i < 7)&&(i < data_now.datasets.length); i++){
-			document.getElementById("db_form_" + (i+1).toString()).style = "";
-			document.getElementById("db_text_" + (i+1).toString()).innerHTML = data_now.datasets[i].label;
-			document.getElementById("db_value_" + (i+1).toString()).innerHTML = data_now.datasets[i].data[data_now.datasets[i].data.length - 1].y.toString() + "dB";
-			if(data_now.datasets[i].data[data_now.datasets[i].data.length - 1].y > safe_sound){
-				Remove("db_value_" + (i+1).toString(), "text-success", "text-danger");
+		offset = 0;
+		for(var i = 0; (i < 7)&&(i < data_type.datasets.length); i++){
+			if(data_type.datasets[i].data.length == 0) {offset++; continue;}
+			document.getElementById("db_form_" + (i+1- offset).toString()).style = "";
+			document.getElementById("db_text_" + (i+1- offset).toString()).innerHTML = data_type.datasets[i].label;
+			document.getElementById("db_value_" + (i+1- offset).toString()).innerHTML = data_type.datasets[i].data[data_type.datasets[i].data.length - 1].y.toString() + "dB";
+			if(data_type.datasets[i].data[data_type.datasets[i].data.length - 1].y > safe_sound){
+				Remove("db_value_" + (i+1- offset).toString(), "text-success", "text-danger");
 			}else{
-				Remove("db_value_" + (i+1).toString(), "text-danger", "text-success");
+				Remove("db_value_" + (i+1- offset).toString(), "text-danger", "text-success");
 			}
+		}
+
+		for(var j = offset; j < 7; j++){
+			document.getElementById("db_form_" + (i+1- offset).toString()).style = "display: none;";
 		}
 	}
 
@@ -281,9 +288,17 @@
 								labelString: 'Godzina',
 							},
 							time: {
+								tooltipFormat: 'DD-MM-YYYY HH:mm:ss',
                     			displayFormats: {
                         			day: 'DD MMM YYYY',
 									hour: 'HH:mm:ss',
+									minute: 'HH:mm:ss',
+									second: 'HH:mm:ss',
+									milisecond: 'HH:mm:ss',
+									month: 'DD MMM YYYY',
+									week: 'DD MMM YYYY',
+									year: 'DD MMM YYYY',
+									quarter: 'DD MMM YYYY',
                     		}
                 		}
 						}],
@@ -299,13 +314,11 @@
 						callbacks: {
 							label: function(tooltipItems, data) {
 								return data.datasets[tooltipItems.datasetIndex].label +': ' + tooltipItems.yLabel + ' dB';
-							}}}}});
+							}
+						}}}});
 	}
 
-	CreateChart();
-	var first = true;
-
-	function getData(type, where=data_now){
+	function getData(type, where){
 		$.ajax({
 			url: '/ajax/getData/',
 			data: {
@@ -320,10 +333,6 @@
 							return new Date(a.x) - new Date(b.x);
 						});
 				if(where.datasets.length > 0){
-					if(first){
-						Refresh();
-						first = false;
-					}
 					myChart.update();
 				}//else
 						//TODO: Wyświetl stosowany komunikat
@@ -334,58 +343,56 @@
 		})
 	}
 
-	getData('break');
-	getData('day', data_day);
-	getData('month', data_month);
-	getData('year', data_year);
+	getData('break', data_type);
+	getData('break', data_now);
 
-	setInterval(function() {
-			$.ajax({
-				url: '/ajax/live_update/',
-				dataType: 'json',
-				success: function (data) {
-					jQuery.each(data, function(i, val) {
-						for(var j = 0; j < data_now.datasets.length; j++)
-							if(i == data_now.datasets[j].label){
-								if (data_now.datasets[j].data[data_now.datasets[j].data.length - 1].x > val.x)
-									 data_now.datasets[j].data.push({x: val.x, y: val.value});
-							}
-					})
+	function live_update() {
+		$.ajax({
+			url: '/ajax/live_update/',
+			dataType: 'json',
+			success: function (data) {
+				jQuery.each(data, function(i, val) {
+					for(var j = 0; j < data_now.datasets.length; j++)
+						if(i == data_now.datasets[j].label){
+							if (data_now.datasets[j].data[data_now.datasets[j].data.length - 1].x > val.x)
+								 data_now.datasets[j].data.push({x: val.x, y: val.value});
+								 data_type.datasets[j].data.push({x: val.x, y: val.value});
+						}
+				})
 					myChart.update();
 					Refresh();
-				},
-				error: function (data) {
-					console.warn(data);
-				}
-			})
-	}, 5000);
+			},
+			error: function (data) {
+				console.warn(data);
+			}
+		})
+	}
+
+	setInterval(live_update, 1000);
 
 	function changeRange() {
 		var i = document.getElementById("range").selectedIndex;
 		switch(i) {
 			case 0:
-				getData('break')
-				delete myChart;
-				data_type = data_now;
-				CreateChart();
+				getData('break', data_now);
+				getData('break', data_type);
+				myChart.update();
 				break;
 			case 1:
-				delete myChart;
-				data_type = data_day;
-				CreateChart();
+				getData('day', data_type);
+				myChart.update();
 				break;
 			case 2:
-				delete myChart;
-				data_type = data_month;
-				CreateChart();
+				getData('month', data_type);
+				myChart.update();
 				break;
 			case 3:
-				delete myChart;
-				data_type = data_year;
-				CreateChart();
+				getData('year', data_type);
+				myChart.update();
 				break;
 		}
 	}
+	CreateChart();
 
 	</script>
 </html>
