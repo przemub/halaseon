@@ -61,8 +61,8 @@ s_mie.num_mie = 0
 def dodaj(wyn):
     p = Pomiar(sonda=Sonda.objects.get(położenie=nazwa_sondy), wynik=wyn)
     p.save()
-    Sonda.objects.get(położenie=nazwa_sondy).ostatni_pomiar_wynik = p.wynik
-    Sonda.objects.get(położenie=nazwa_sondy).ostatni_pomiar_data = p.data
+    Sonda.objects.get(położenie=nazwa_sondy).update(ostatni_pomiar_wynik = p.wynik)
+    Sonda.objects.get(położenie=nazwa_sondy).update(ostatni_pomiar_data = p.data)
     s_frag(wyn)
     s_dzn(wyn)
     s_mie(wyn)

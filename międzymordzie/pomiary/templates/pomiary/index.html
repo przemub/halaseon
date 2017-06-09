@@ -351,15 +351,13 @@
 			dataType: 'json',
 			success: function (data) {
 				jQuery.each(data, function(i, val) {
-					for(var j = 0; j < data_now.datasets.length; j++)
-						if(i == data_now.datasets[j].label){
-							if(data_now.datasets[j].data.length > 0){
-								if (data_now.datasets[j].data[data_now.datasets[j].data.length - 1].x > val.x) {
-									 data_now.datasets[j].data.push({x: val.x, y: val.value});
+					for(var j = 0; j < data_type.datasets.length; j++)
+						if(i == data_type.datasets[j].label){
+							if(data_type.datasets[j].data.length > 0){
+								if (data_type.datasets[j].data[data_type.datasets[j].data.length - 1].x > val.x) {
 									 data_type.datasets[j].data.push({x: val.x, y: val.value});
 								 }
 							 }else{
-								 data_now.datasets[j].data.push({x: val.x, y: val.value});
 								 data_type.datasets[j].data.push({x: val.x, y: val.value});
 							 }
 
