@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.utils import timezone
 
-from .models import Pomiar, Sonda, newValue
+from .models import Pomiar, Sonda
 
 context = {}
 
@@ -16,8 +16,8 @@ def initial(request):
 
 def live_update(request):
     dict = {}
-    if len(newValue) > 0:
-        dict[newValue['sonda'].__str__()] = {'value': newValue['pomiar'].wynik, 'data': newValue['pomiar'].data}
+    for sonda in context['sondy']:
+        dict[sonda.__str__()] = {'y': sonda.ostatni_pomiar_wynik, 'x': sonda.ostatni_pomiar_data}
     return JsonResponse(dict)
 
 #def aktPrzerwa():

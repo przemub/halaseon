@@ -11,7 +11,7 @@ import datetime
 import django
 django.setup()
 
-from ..models import Pomiar, Sonda,Fragment, Dzien, Miesiac, newValue
+from ..models import Pomiar, Sonda,Fragment, Dzien, Miesiac
 from django.utils import timezone
 
 DEBUG = False
@@ -61,8 +61,8 @@ s_mie.num_mie = 0
 def dodaj(wyn):
     p = Pomiar(sonda=Sonda.objects.get(położenie=nazwa_sondy), wynik=wyn)
     p.save()
-    newValue['pomiar'] = p
-    newValue['sonda'] = Sonda.objects.get(położenie=nazwa_sondy)
+    Sonda.objects.get(położenie=nazwa_sondy).ostatni_pomiar_wynik = p.wynik
+    Sonda.objects.get(położenie=nazwa_sondy).ostatni_pomiar_data = p.data
     s_frag(wyn)
     s_dzn(wyn)
     s_mie(wyn)

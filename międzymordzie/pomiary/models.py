@@ -6,11 +6,10 @@ from django.dispatch import receiver
 
 from colorful.fields import RGBColorField
 
-newValue = {}
-
 class Sonda(models.Model):
     położenie = models.CharField(max_length=100)
-    ostatni_pomiar = models.DateTimeField()
+    ostatni_pomiar_data = models.DateTimeField()
+    ostatni_pomiar_wynik = models.DecimalField(max_digits=5, decimal_places=1, default=0)
 
     data_ostatni_fragment = models.DateTimeField(default=timezone.now)
     data_ostatni_dzien = models.DateTimeField(default=timezone.now)
