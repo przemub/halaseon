@@ -16,7 +16,7 @@ def initial(request):
 
 def live_update(request):
     dict = {}
-    for sonda in context['sondy']:
+    for sonda in Sonda.objects.all():
         dict[sonda.__str__()] = {'y': sonda.ostatni_pomiar_wynik, 'x': sonda.ostatni_pomiar_data}
     return JsonResponse(dict)
 

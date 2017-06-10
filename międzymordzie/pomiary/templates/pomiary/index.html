@@ -229,22 +229,22 @@
 
 	function Refresh() {
 		var offset = 0;
-		for(var i = 0; (i < 4)&&(i < data_now.datasets.length); i++){
-			if(data_now.datasets[i].data.length == 0){ offset++; continue;}
+		for(var i = 0; (i < 4)&&(i < data_type.datasets.length); i++){
+			if(data_type.datasets[i].data.length == 0){ offset++; continue;}
 			document.getElementById("panel" + (i+1 - offset).toString()).style = "";
-			document.getElementById("prog_value_" + (i+1- offset).toString()).innerHTML = data_now.datasets[i].data[data_now.datasets[i].data.length - 1].y.toString() + "dB";
-			document.getElementById("prog_proc_" + (i+1- offset).toString()).style = "width: " + data_now.datasets[i].data[data_now.datasets[i].data.length - 1].y.toString() + "%";
-			if(data_now.datasets[i].data[data_now.datasets[i].data.length - 1].y <= safe_sound_2){
+			document.getElementById("prog_value_" + (i+1- offset).toString()).innerHTML = data_type.datasets[i].data[data_type.datasets[i].data.length - 1].y.toString() + "dB";
+			document.getElementById("prog_proc_" + (i+1- offset).toString()).style = "width: " + data_type.datasets[i].data[data_type.datasets[i].data.length - 1].y.toString() + "%";
+			if(data_type.datasets[i].data[data_type.datasets[i].data.length - 1].y <= safe_sound_2){
 				document.getElementById("prog_proc_" + (i+1- offset).toString()).classList.remove("progress-bar-warning");
 				Remove("prog_proc_" + (i+1- offset).toString(), "progress-bar-danger", "progress-bar-success");
-			}else if(data_now.datasets[i].data[data_now.datasets[i].data.length - 1].y > safe_sound){
+			}else if(data_type.datasets[i].data[data_type.datasets[i].data.length - 1].y > safe_sound){
 				document.getElementById("prog_proc_" + (i+1- offset).toString()).classList.remove("progress-bar-warning");
 				Remove("prog_proc_" + (i+1- offset).toString(), "progress-bar-success", "progress-bar-danger");
 			}else {
 				document.getElementById("prog_proc_" + (i+1- offset).toString()).classList.remove("progress-bar-success");
 				Remove("prog_proc_" + (i+1- offset).toString(), "progress-bar-danger", "progress-bar-warning");
 			}
-			document.getElementById("prog_text_" + (i+1- offset).toString()).innerHTML = data_now.datasets[i].label;
+			document.getElementById("prog_text_" + (i+1- offset).toString()).innerHTML = data_type.datasets[i].label;
 		}
 		for(var j = offset; j < 4; j++){
 			document.getElementById("panel" + (i+1 - offset).toString()).style = "display: none;";
@@ -354,11 +354,11 @@
 					for(var j = 0; j < data_type.datasets.length; j++)
 						if(i == data_type.datasets[j].label){
 							if(data_type.datasets[j].data.length > 0){
-								if (data_type.datasets[j].data[data_type.datasets[j].data.length - 1].x > val.x) {
-									 data_type.datasets[j].data.push({x: val.x, y: val.value});
+								if (data_type.datasets[j].data[data_type.datasets[j].data.length - 1].x < val.x) {
+									 data_type.datasets[j].data.push({x: val.x, y: val.y});
 								 }
 							 }else{
-								 data_type.datasets[j].data.push({x: val.x, y: val.value});
+								 data_type.datasets[j].data.push({x: val.x, y: val.y});
 							 }
 
 						}
