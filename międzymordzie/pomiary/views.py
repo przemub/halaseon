@@ -40,7 +40,7 @@ def getData(request):
         prep['backgroundColor'] = sonda.kolor_alpha()
         data = []
         if period == 'break':
-            time_threshold = timezone.now() - timezone.timedelta(hours=1)
+            time_threshold = timezone.now() - timezone.timedelta(minutes=1)
             for pomiar in sonda.pomiary().filter(data__day=timezone.now().day).filter(data__gt=time_threshold):
                 data.append({'x': pomiar.data, 'y': int(pomiar.wynik)})
             for pomiar in sonda.pomiary().filter(data__day=timezone.now().day).filter(data__gt=time_threshold):

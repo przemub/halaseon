@@ -1,4 +1,10 @@
 from .mierz import main
+from .losowo import main as lmain
 
-main()
+import sys
+
+if (len(sys.argv) > 1):
+    lmain()
+else:
+    main()
 
